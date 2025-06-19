@@ -1,14 +1,21 @@
 {
-    "usuarios":[
-    
-    ],
-    "areas":[
-
-    ],
-    "conteudos":[
-
-    ],
-    "desafios":[
-        
-    ]
+  "usuarios": [
+    {
+      "id": "4683",
+      "nome": "josecleiton",
+      "escolaridade": "jose cleiton 2 ano de jose cleiton",
+      "email": "jose cleiton @ cleiton.rasta",
+      "senha": "josecleitoncleiton"
+    },
+    {
+      "id": "307d",
+      "nome": "rogeriobombas",
+      "escolaridade": "1",
+      "email": "rogeriosbombagranderoubagemeialpontopomba",
+      "senha": "assequenciasdebimba"
+    }
+  ],
+  "areas": [],
+  "conteudos": [],
+  "desafios": []
 }

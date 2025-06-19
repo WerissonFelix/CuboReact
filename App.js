@@ -10,23 +10,59 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 
+const Stack = createNativeStackNavigator();
 
 function App() {
 return (
   <NavigationContainer>
     <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Home" component={HomeScreen}/>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Cadastro" component={CadastroScreen} />
-      <Stack.Screen name="AddContato" component={CadContato} />
-      <Stack.Screen name="EditContato" component={EditContat} />
+      <Stack.Screen name="Home" component={HomeScreen}/>
     </Stack.Navigator>
   </NavigationContainer>
   );
 }
 
 
+export function HomeScreen() {
+  return (
+
+  <SafeAreaView style={styles.container}>
+    <View style={styles.containerheader}>
+      <Text style={styles.title}>Nome: </Text>
+      <Ionicons
+              name="add"
+              size={24}
+              color="black"
+              style={{ marginRight: 10 , marginLeft: '50%'}}
+              onPress={() => navigation.navigate('AddContato')}
+              />
+    </View>
+    </SafeAreaView>
+  );
+}
+
 function LoginScreen({navigation}) {
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+
+  const verifyUser = () =>{axios.get(`http://localhost:3000/usuarios`, {
+  params: { 
+    email:email, 
+    senha:senha }
+    })
+    .then((response) => {
+        const usuario = response.data;
+        if(usuario){
+          navigation.navigate('Home', {user:usuario})
+        }
+        else{
+          alert("josecleiton")
+        }
+    })
+    .catch((err) => console.log(err));
+  }
   return (
 
     <SafeAreaView style={styles.container}>
@@ -38,10 +74,10 @@ function LoginScreen({navigation}) {
           style={{ margin: 10 }}
         />
 
-        <Input style={styles.Input} placeholder='Email'/>
-        <Input style={styles.Input} placeholder="Senha" secureTextEntry={true} />
+        <Input style={styles.Input} placeholder='Email' onChangeText={setEmail}/>
+        <Input style={styles.Input} placeholder="Senha" secureTextEntry={true} onChangeText={setSenha}/>
 
-        <Button style={styles.Button} title="Logar" onPress={() => navigation.navigate('Home')}/>
+        <Button style={styles.Button} title="Logar" onPress={verifyUser}/>
         <Button style={styles.Button} title="Cadastrar" onPress={() => navigation.navigate('Cadastro')}/>
 
         <Text>esqueci a senha</Text>
@@ -54,7 +90,7 @@ function LoginScreen({navigation}) {
 }
 
 
-function CadastroScreen(){
+function CadastroScreen({navigation}){
   const [nome, setNome] = useState('');
   const [escolaridade, setEscolaridade] = useState('');
   const [email, setEmail] = useState('');
