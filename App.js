@@ -25,25 +25,26 @@ return (
 }
 
 
-export function HomeScreen() {
+export function HomeScreen({ navigation, route}) {
+  const { user } = route.params;
+  
   return (
 
   <SafeAreaView style={styles.container}>
     <View style={styles.containerheader}>
-      <Text style={styles.title}>Nome: </Text>
+      <Text style={styles.title}>Nome:{user.nome} </Text>
       <Ionicons
               name="add"
               size={24}
               color="black"
               style={{ marginRight: 10 , marginLeft: '50%'}}
-              onPress={() => navigation.navigate('AddContato')}
               />
     </View>
     </SafeAreaView>
   );
 }
 
-function LoginScreen({navigation}) {
+function LoginScreen({navigation, route}) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
@@ -55,10 +56,10 @@ function LoginScreen({navigation}) {
     .then((response) => {
         const usuario = response.data;
         if(usuario){
-          navigation.navigate('Home', {user:usuario})
+          navigation.navigate('Home', {user:usuario[0]})
         }
         else{
-          alert("josecleiton")
+          alert("Não conseguiu logar na sua conta!")
         }
     })
     .catch((err) => console.log(err));

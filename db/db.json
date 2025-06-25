@@ -13,6 +13,13 @@
       "escolaridade": "1",
       "email": "rogeriosbombagranderoubagemeialpontopomba",
       "senha": "assequenciasdebimba"
+    },
+    {
+      "id": "53dd",
+      "nome": "Mestre Bimba",
+      "escolaridade": "Mestre (Em Bimbadas)",
+      "email": "Bimba.Mestre@sequenciasbimba.com",
+      "senha": "sequenciasdebimba123"
     }
   ],
   "areas": [],
