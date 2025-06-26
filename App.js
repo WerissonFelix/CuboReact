@@ -7,7 +7,6 @@ import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Ionicons } from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 
 const Stack = createNativeStackNavigator();
@@ -58,11 +57,8 @@ function LoginScreen({navigation, route}) {
         if(usuario){
           navigation.navigate('Home', {user:usuario[0]})
         }
-        else{
-          alert("Não conseguiu logar na sua conta!")
-        }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(`Não conseguiu logar na sua conta${err}`));
   }
   return (
 

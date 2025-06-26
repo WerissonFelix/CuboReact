@@ -20,6 +20,13 @@
       "escolaridade": "Mestre (Em Bimbadas)",
       "email": "Bimba.Mestre@sequenciasbimba.com",
       "senha": "sequenciasdebimba123"
+    },
+    {
+      "id": "9a79",
+      "nome": "nilson",
+      "escolaridade": "teste",
+      "email": "njr1466@gmai.com",
+      "senha": "123456"
     }
   ],
   "areas": [],
