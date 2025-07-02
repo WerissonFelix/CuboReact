@@ -15,14 +15,57 @@
       "senha": "senha1234"
     },
     {
-      "id": "2c01",
-      "nome": "Pietra Russvelt Khoruys",
-      "escolaridade": "Ensino Médio",
+      "nome": "Pitriev Russvelt Khormitkoz",
       "email": "piruskho@mail.com",
-      "senha": "senha1234"
+      "escolaridade": "Ensino Médio",
+      "senha": "senha1234",
+      "id": "2c01"
     }
   ],
-  "areas": [],
+  "areas": [
+    {
+      "id": "b0f7",
+      "titulo": "Adição",
+      "icon": "+",
+      "cor": "#e30205"
+    },
+    {
+      "id": "5f77",
+      "titulo": "Subtração",
+      "icon": "-",
+      "cor": "#ffbf00"
+    },
+    {
+      "id": "888d",
+      "titulo": "Multiplicação",
+      "icon": "×",
+      "cor": "#0024e4"
+    },
+    {
+      "id": "ca91",
+      "titulo": "Divisão",
+      "icon": "÷",
+      "cor": "#e30205"
+    }
+  ],
   "conteudos": [],
-  "desafios": []
+  "desafios": [
+    {
+      "id": "blablabla",
+      "titulo": "Adição Irada!",
+      "foto": "cottonbro.jpg",
+      "texto": "quanto é 1 + 1?",
+      "nivel": "fácil"
+    },
+    {
+      "id": "6312",
+      "titulo": "Adição Simples",
+      "foto": "cottonbro.jpg"
+    },
+    {
+      "id": "d600",
+      "titulo": "Adição Intermediária",
+      "foto": "cottonbro.jpg"
+    }
+  ]
 }
