@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "417447425142",
+    "project_id": "cubo-42758",
+    "storage_bucket": "cubo-42758.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417447425142:android:7e8340277f46ca8083db57",
+        "android_client_info": {
+          "package_name": "com.cubo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1TVflOPgXZkN8g7CKCFE58c4yEmYkAmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
