@@ -1,35 +1,72 @@
 {
   "usuarios": [
     {
-      "id": "4683",
-      "nome": "josecleiton",
-      "escolaridade": "jose cleiton 2 ano de jose cleiton",
-      "email": "jose cleiton @ cleiton.rasta",
-      "senha": "josecleitoncleiton"
+      "id": "6618",
+      "nome": "Michelle Petra Borba",
+      "escolaridade": "Fundamental 1",
+      "email": "mipebo@mail.com",
+      "senha": "senha1234"
     },
     {
-      "id": "307d",
-      "nome": "rogeriobombas",
-      "escolaridade": "1",
-      "email": "rogeriosbombagranderoubagemeialpontopomba",
-      "senha": "assequenciasdebimba"
+      "id": "2f93",
+      "nome": "Vicente Dias Gomes",
+      "escolaridade": "Ensino Médio",
+      "email": "vdg@mail.com",
+      "senha": "senha1234"
     },
     {
-      "id": "53dd",
-      "nome": "Mestre Bimba",
-      "escolaridade": "Mestre (Em Bimbadas)",
-      "email": "Bimba.Mestre@sequenciasbimba.com",
-      "senha": "sequenciasdebimba123"
-    },
-    {
-      "id": "9a79",
-      "nome": "nilson",
-      "escolaridade": "teste",
-      "email": "njr1466@gmai.com",
-      "senha": "123456"
+      "nome": "Pitriev Russvelt Khormitkoz",
+      "email": "piruskho@mail.com",
+      "escolaridade": "Ensino Médio",
+      "senha": "senha1234",
+      "id": "2c01"
     }
   ],
-  "areas": [],
+  "areas": [
+    {
+      "id": "b0f7",
+      "titulo": "Adição",
+      "icon": "+",
+      "cor": "#e30205"
+    },
+    {
+      "id": "5f77",
+      "titulo": "Subtração",
+      "icon": "-",
+      "cor": "#ffbf00"
+    },
+    {
+      "id": "888d",
+      "titulo": "Multiplicação",
+      "icon": "×",
+      "cor": "#0024e4"
+    },
+    {
+      "id": "ca91",
+      "titulo": "Divisão",
+      "icon": "÷",
+      "cor": "#e30205"
+
+    }
+  ],
   "conteudos": [],
-  "desafios": []
+  "desafios": [
+    {
+      "id": "blablabla",
+      "titulo": "Adição Irada!",
+      "foto": "cottonbro.jpg",
+      "texto": "quanto é 1 + 1?",
+      "nivel": "fácil"
+    },
+    {
+      "id": "6312",
+      "titulo": "Adição Simples",
+      "foto": "cottonbro.jpg"
+    },
+    {
+      "id": "d600",
+      "titulo": "Adição Intermediária",
+      "foto": "cottonbro.jpg"
+    }
+  ]
 }

@@ -215,7 +215,7 @@ function LoginScreen({navigation, route}) {
       alert("Houve um erro. Contate o suporte.");
     }
   };
-  return (
+ return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
         <Text style={{ fontFamily: 'Squada', fontSize: 100 }}>
@@ -411,6 +411,7 @@ function ProfileScreen({navigation, route}) {
   const [senha, setSenha] = useState(user.senha);
 
   const updateUser = async () => {
+
     try {
     const userRef =  await doc(db, "usuarios", user.id);
       if(userRef){
@@ -420,9 +421,8 @@ function ProfileScreen({navigation, route}) {
     } catch(e) {
       console.log('Erro:', e);
       alert("Deu ruim");
+
     }
-  }
-    
 
   
   return (
@@ -462,6 +462,7 @@ function ProfileScreen({navigation, route}) {
    </SafeAreaView>
     
   )
+}
 }
 
 export default App;
