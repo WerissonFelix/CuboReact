@@ -1,21 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect} from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, Image } from 'react-native';
-import { Input, Icon , Button , ListItem} from 'react-native-elements';
-import { SafeAreaView } from 'react-native-web';
-import { NavigationContainer} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { Ionicons } from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
-import axios from 'axios';
-import { useFonts } from "expo-font";
-import { Picker } from '@react-native-picker/picker';
 import { FontAwesome6 } from '@expo/vector-icons';
-import { collection, getDocs } from 'firebase/firestore';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { Picker } from '@react-native-picker/picker';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useFonts } from "expo-font";
+import { StatusBar } from 'expo-status-bar';
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { query, where, addDoc, doc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Input } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-web';
 
 
 const firebaseConfig = {
@@ -73,7 +68,7 @@ function StartScreen({navigation}) {
     }
   };
 
-  
+
 
 
   return (
@@ -149,7 +144,7 @@ return (
         <Text style={{ color: "green" }}>B</Text>
         <Text style={{ color: "red" }}>O</Text>
       </Text>
-    
+
       <View style={styles.container}>
         <View style={styles.InputContainer}>
           <Text style={styles.Label}>Nome Completo: </Text>
@@ -176,7 +171,7 @@ return (
           <Text style={styles.Label}>Senha: </Text>
           <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder="********" value={senha} onChangeText={setSenha} secureTextEntry={true} />
         </View>
-        
+
         <Button style={styles.Button} title="Cadastrar" onPress={saveUser}/>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text style={{ color: "blue" }}>Já tem conta? Faça Login</Text>
@@ -196,13 +191,13 @@ function LoginScreen({navigation, route}) {
   const verifyUser = async () => {
     try {
       const q = query(
-        collection(db, "usuarios"), 
+        collection(db, "usuarios"),
         where("email", "==", email),
         where("senha", "==", senha)
       );
-      
+
       const querySnapshot = await getDocs(q);
-      
+
       if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
           navigation.navigate('Home', {user: {id: doc.id, ...doc.data()}});
@@ -230,7 +225,7 @@ function LoginScreen({navigation, route}) {
             <Text style={styles.Label}>E-mail: </Text>
             <Input inputContainerStyle={{ borderBottomWidth: 0 }} style={styles.Input} placeholder='nome@exemplo.com' onChangeText={setEmail}/>
           </View>
-          
+
           <View style={styles.InputContainer}>
             <Text style={styles.Label}>Senha: </Text>
             <Input inputContainerStyle={{ borderBottomWidth: 0 }} style={styles.Input} placeholder="Senha" secureTextEntry={true} onChangeText={setSenha}/>
@@ -250,50 +245,79 @@ function LoginScreen({navigation, route}) {
 
 function HomeScreen({ navigation, route}) {
 
-  const { user } = route.params; 
+  const { user } = route.params;
   const [areas, setAreas] = useState([]);
   const [desafios, setDesafios] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/areas")
-    .then(res => {
-      console.log("RES: ", res);
-      setAreas(res.data);
-    })
-    .catch(err => {
+    const getdesafios = async () => {
+    try {
+      const q = query(
+        collection(db, "desafios"),
+      );
+
+      const querySnapshot = await getDocs(q);
+
+
+      if (!querySnapshot.empty) {
+        const listdesafios = [];
+        querySnapshot.forEach((doc) => {
+          listdesafios.push({id: doc.id, ...doc.data()});
+        });
+        setDesafios(listdesafios)
+      } else {
+        alert("Não há desafios cadastrados!");
+      }
+    } catch (err) {
       console.log("ERROR: ", err);
       alert("Houve um erro. Contate o suporte.");
-    })
-  }, []);
+    }
+
+  }
+    getdesafios();
+}, [])
+
 
   useEffect(() => {
-    axios.get("http://localhost:3000/desafios")
-    .then(res => {
-      console.log("RES: " + res);
-      setDesafios(res.data);
-    })
-    .catch(err => {
+  const getareas = async () => {
+    try {
+      const q = query(
+        collection(db, "areas"),
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const listareas = [];
+        querySnapshot.forEach((doc) => {
+          listareas.push({id:doc.id, ... doc.data()})
+        });
+        setAreas(listareas)
+      } else {
+        alert("Não há areas cadastradas!");
+      }
+    } catch (err) {
       console.log("ERROR: ", err);
       alert("Houve um erro. Contate o suporte.");
-    })
-  }, [])
+    }
+  }
+  getareas();
 
-  console.log("user.nome: ", user.nome);
-
+}, [])
 
   return (
     <SafeAreaView style={{backgroundColor: "#0722b2", width: "100%"}}>
       <View style={{ display: "flex", flexDirection: "column", width: "100%"}}>
- 
+
         {/* Header Component Starts */}
         <View style={{ display: "flex", flexDirection: "row", gap: 15, paddingTop: 20, paddingLeft: 20, paddingRight: 20, height: 80, width: "100%", alignContent: "space-evenly", justifyContent: "space-between"}}>
-          
+
           {/* User Icon and Welcome Message Container */}
           <View style={{ display: "flex", flexDirection: "row"}}>
             {/* User Icon */}
             <TouchableOpacity onPress={() => navigation.navigate("Profile", {user:user})}>
               <View style={[styles.Icon, { backgroundColor: "orange"}]} onPress={() => navigation.navigate("Profile")}>
-                <AntDesign name="user" size={40} color="white" rounded/>        
+                <AntDesign name="user" size={40} color="white" rounded/>
               </View>
             </TouchableOpacity>
 
@@ -307,12 +331,12 @@ function HomeScreen({ navigation, route}) {
           {/* Bell Icon */}
           <View style={{ display: "flex", flexDirection: "row", gap: 10}}>
             <View style={[styles.Icon]}>
-              <AntDesign name="bells" size={40} color="orange" rounded/>        
+              <AntDesign name="bells" size={40} color="orange" rounded/>
             </View>
-            
+
             {/* Trophy Icon */}
             <View style={[styles.Icon]}>
-              <AntDesign name="Trophy" size={40} color="orange" rounded/>        
+              <AntDesign name="Trophy" size={40} color="orange" rounded/>
             </View>
           </View>
         </View>
@@ -320,40 +344,40 @@ function HomeScreen({ navigation, route}) {
 
         {/* Main Component Starts */}
         <View style={{ display: "flex", flexDirection: "column", backgroundColor: "white", borderTopLeftRadius: 50, paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20}}>
-          
+
           {/* Articles Component Starts */}
           <View testID='articlesContainer' style={{ paddingBottom: 20}}>
             <Text style={{ fontSize: 20, paddingBottom: 20, textAlign: "left"}}>O que você quer aprender hoje?</Text>
-            
+
             {/* Article Container Starts */}
             <View style={{ display: "flex", flexDirection: "row", gap: 20, flexWrap: "wrap", alignItems: "center", alignContent: "center", justifyContent: "center"}}>
 
               {/* Areas Mapper */}
               {areas.map((area, index) => (
                 <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
-                
+
                   <View style={{ borderRadius: 60, backgroundColor: area.cor, width: 80, height: 80 }}>
                     <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{area.icon}</Text>
                   </View>
-                
+
                   <View>
                     <Text style={{ fontSize: 20, textAlign: "center" }}>{area.titulo}</Text>
                   </View>
-                
+
                 </View>
               ))}
 
             </View>
             {/* Article Container Ends */}
-        
+
           </View>
           {/* Articles Container Ends */}
-          
+
 
           {/* Challenges Component Starts */}
           <View testID='articlesContainer'>
             <Text style={{ fontSize: 20, paddingBottom: 20}}>Desafios: tá achando fácil?</Text>
-            
+
             {/* Challenge Container Starts */}
             <View style={{ display: "flex", flexDirection: "row", gap: 20, flexWrap: "wrap", alignItems: "center", alignContent: "center", justifyContent: "center"}}>
 
@@ -366,16 +390,16 @@ function HomeScreen({ navigation, route}) {
 
                   <View style={{ width: "100%"}}>
                     <Text style={{ fontSize: 20, textAlign: "center" }}>{desafio.titulo}</Text>
-                  </View>       
+                  </View>
                 </View>
               ))}
 
             </View>
             {/* Challenge Container Ends */}
-        
+
           </View>
           {/* Challenges Container Ends */}
-          
+
         </View>
       </View>
       <View style={{ display: "flex", flexDirection: "row", alignContent: "space-between", alignItems: "center", justifyContent: "space-between", paddingLeft: 20, paddingRight: 20}}>
@@ -415,7 +439,7 @@ function ProfileScreen({navigation, route}) {
     try {
     const userRef =  await doc(db, "usuarios", user.id);
       if(userRef){
-        await updateDoc(userRef, {nome,email,escolaridade,senha})      
+        await updateDoc(userRef, {nome,email,escolaridade,senha})
       }
       alert('Alterações feitas!');
     } catch(e) {
@@ -424,7 +448,7 @@ function ProfileScreen({navigation, route}) {
 
     }
 
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -454,13 +478,13 @@ function ProfileScreen({navigation, route}) {
             <Text style={styles.Label}>Senha: </Text>
             <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder="********" value={senha} onChangeText={setSenha} secureTextEntry={true} />
           </View>
-          
+
           <Button style={styles.Button} title="Salvar Alterações" onPress={updateUser}/>
           <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate("Home", {user:user})}/>
         </View>
       </View>
    </SafeAreaView>
-    
+
   )
 }
 }
@@ -479,7 +503,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     width: '100%',
   },
-  
+
   logoContainer: {
     marginTop: 10,
     width: '100%',
@@ -501,7 +525,7 @@ const styles = StyleSheet.create({
     padding : 10,
     width: 200
   },
-  
+
   InputContainer: {
     flexDirection: "column",
     width: "100%",
@@ -516,7 +540,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 12, 
+    borderRadius: 12,
     padding: 0,
     fontSize: 16,
     backgroundColor: 'white'
@@ -539,10 +563,10 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center"
   },
-  
+
   Label: {
     width: "100%"
-  }, 
+  },
   title: {
     fontSize: 25
   }
