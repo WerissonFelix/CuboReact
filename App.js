@@ -200,7 +200,12 @@ function LoginScreen({navigation, route}) {
 
       if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
-          navigation.navigate('Home', {user: {id: doc.id, ...doc.data()}});
+          if (doc.id === 'PS82zLCNaXDlSFnqq76t'){
+              alert('adm é viado')
+          } else{
+            navigation.navigate('Home', {user: {id: doc.id, ...doc.data()}});
+          }
+
         });
       } else {
         alert("E-mail ou senha incorretos!");
