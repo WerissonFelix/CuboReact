@@ -81,7 +81,6 @@ function StartScreen({navigation}) {
           <Text style={{ color: "red" }}>O</Text>
         </Text>
         <Text style={{ fontFamily: 'Squada', fontSize: 20 }}>Bem-vind@</Text>
-        // Adicione um botão temporário no JSX:
         <Button title="Testar Firebase" onPress={testFirebase} />
       </View>
     </SafeAreaView>
@@ -443,16 +442,20 @@ function ProfileScreen({navigation, route}) {
 
     try {
     const userRef =  await doc(db, "usuarios", user.id);
-      if(userRef){
+      
+    if(userRef){
         await updateDoc(userRef, {nome,email,escolaridade,senha})
       }
       alert('Alterações feitas!');
+
+      navigation.navigate('Home', {user: {id: doc.id, ...doc.data()}});
     } catch(e) {
       console.log('Erro:', e);
       alert("Deu ruim");
 
     }
-
+    
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -485,14 +488,13 @@ function ProfileScreen({navigation, route}) {
           </View>
 
           <Button style={styles.Button} title="Salvar Alterações" onPress={updateUser}/>
-          <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate("Home", {user:user})}/>
+          <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate("Home", {user:userRef})}/>
         </View>
       </View>
    </SafeAreaView>
+)
+}
 
-  )
-}
-}
 
 export default App;
 
