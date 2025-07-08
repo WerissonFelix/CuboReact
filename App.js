@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from "expo-font";
 import { StatusBar } from 'expo-status-bar';
 import { initializeApp } from 'firebase/app';
-import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, deleteDoc,where, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
@@ -38,6 +38,11 @@ function App() {
         <Stack.Screen name="Cadastro" component={CadastroScreen} options={{ headerShown: false}}/>
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false}}/>
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false}}/>
+        <Stack.Screen name="AdmHome" component={AdmHomeScreen} options={{ headerShown: false}}/>
+        <Stack.Screen name="AdmArea" component={AdmAreaScreen} options={{ headerShown: false}}/>
+        <Stack.Screen name="AdmAreaUpdate" component={AdmAreaUpdateScreen} options={{ headerShown: false}}/>
+        {/*<Stack.Screen name="AdmDesafio" component={AdmDesafioScreen} options={{ headerShown: false}}/>
+        <Stack.Screen name="AdmConteudo" component={AdmConteudoScreen} options={{ headerShown: false}}/>  */}
       </Stack.Navigator>
     </NavigationContainer>
     );
@@ -200,7 +205,7 @@ function LoginScreen({navigation, route}) {
       if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
           if (doc.id === 'PS82zLCNaXDlSFnqq76t'){
-              alert('adm é viado')
+              navigation.navigate('AdmHome',{user: {id: doc.id, ... doc.data()}});
           } else{
             navigation.navigate('Home', {user: {id: doc.id, ...doc.data()}});
           }
@@ -443,12 +448,20 @@ function ProfileScreen({navigation, route}) {
     try {
     const userRef =  await doc(db, "usuarios", user.id);
       
-    if(userRef){
-        await updateDoc(userRef, {nome,email,escolaridade,senha})
-      }
-      alert('Alterações feitas!');
+    if(!userRef.empty){
+        await updateDoc(userRef, {nome,email,escolaridade,senha});
+       
+        const newuser = await getDoc(userRef);
 
-      navigation.navigate('Home', {user: {id: doc.id, ...doc.data()}});
+        const actualuser = {
+        id: newuser.id,
+        ...newuser.data()
+      };
+
+        alert('Alterações feitas!');
+        navigation.navigate('Home', {user:actualuser});
+      }
+    
     } catch(e) {
       console.log('Erro:', e);
       alert("Deu ruim");
@@ -488,15 +501,160 @@ function ProfileScreen({navigation, route}) {
           </View>
 
           <Button style={styles.Button} title="Salvar Alterações" onPress={updateUser}/>
-          <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate("Home", {user:userRef})}/>
+          <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate("Home", {user})}/>
         </View>
       </View>
    </SafeAreaView>
 )
 }
 
+function AdmHomeScreen({navigation, route}) {
+  const { adm } = route.params;
+  return(
+    <SafeAreaView>
+      <View>
+        <Button title="Area" onPress={() => navigation.navigate("AdmArea", {user:adm})}/>
+        <Button title="Desafios" onPress={() => navigation.navigate("AdmArea", {user:adm})}/>
+        <Button title="Conteudos" onPress={() => navigation.navigate("AdmConteudos", {user:adm})}/>
+      </View>
+    </SafeAreaView>
+  )
+}
 
+function AdmAreaScreen({navigation, route}){
+  const [areas, setAreas] = useState([])
+  const deletearea = async (areaID) =>{
+    try {
+      await deleteDoc(doc(db, "areas", areaID));
+      
+      alert("Usuário excluído com sucesso!");
+      navigation.navigate('AdmArea');
+  } catch (e) {
+    console.error("Erro ao excluir area: ", e);
+    }
+  }
+  useEffect(() => {
+    const getareas = async () => {
+      try {
+        const q = query(
+          collection(db, "areas"),
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const listareas = [];
+          querySnapshot.forEach((doc) => {
+            listareas.push({id:doc.id, ... doc.data()})
+          });
+          setAreas(listareas)
+        } else {
+          alert("Não há areas cadastradas!");
+        }
+      } catch (err) {
+        console.log("ERROR: ", err);
+        alert("Houve um erro. Contate o suporte.");
+      }
+    }
+    getareas();
+
+}, [])
+ 
+  return(
+    areas.map((area, index) => (
+      <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
+
+        <View style={{ borderRadius: 60, backgroundColor: area.cor, width: 80, height: 80 }}>
+          <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{area.icon}</Text>
+        </View>
+
+        <View>
+          <Text style={{ fontSize: 20, textAlign: "center" }}>{area.titulo}</Text>
+        </View>
+
+        <View>
+          <Text style={{ fontSize: 20, textAlign: "center" }}>{area.cor}</Text>
+        </View>
+
+        <View>
+          <Button title="mude a area" onPress={() => navigation.navigate("AdmAreaUpdate", {areaID:area.id})}/>
+        </View>
+
+
+        <View>
+          <Button tittle="deleta a area" onPress={() =>deletearea(area.id)}/>
+        </View>
+
+
+      </View>
+    ))
+  )
+}
+
+function AdmAreaUpdateScreen({navigation, route}) {
+  const { areaID } = route.params;
+  const [area, setArea] = useState({});
+  const [titulo, setTitulo] = useState('');
+  const [icon, setIcon] = useState('');
+  const [cor, setCor] = useState('');
+
+  console.log(areaID);
+  useEffect(() => {
+    const getArea = async () =>{
+      try{ 
+        const docRef = doc(db, "areas", areaID);
+        const queryArea = await getDoc(docRef);
+
+        if(!queryArea.empty){
+          setArea({
+            id: queryArea.id, ...
+            queryArea.data()
+          });
+          setCor(queryArea.data().cor);
+          setIcon(queryArea.data().icon);
+          setTitulo(queryArea.data().titulo);
+          alert('foi pra edit');
+        }else {
+          console.log("Nenhum documento encontrado!");
+        }
+    } catch(e){
+        console.log("ocorreu um erro", e)
+    }}
+    getArea();
+  }, [areaID])
+ 
+  return(
+      <SafeAreaView style={styles.container}>
+
+      <View style={styles.container}>
+        <View style={styles.InputContainer}>
+          <Text style={styles.Label}>Cor: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: #ffbf00' value={cor} onChangeText={setCor}/>
+        </View>
+
+        <View style={styles.InputContainer}>
+          <Text style={styles.Label}>Icon: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder="Ex: +" value={icon} onChangeText={setIcon}/>
+        </View>
+
+
+        <View style={styles.InputContainer}>
+          <Text style={styles.Label}>Título: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder="Título" value={titulo} onChangeText={setTitulo} />
+        </View>
+
+
+        <View> 
+          <Button style={styles.Button} title="Cadastrar" />
+        </View>
+       </View>
+  </SafeAreaView>
+  );
+}
 export default App;
+
+
+
 
 const styles = StyleSheet.create({
   container: {
