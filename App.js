@@ -41,8 +41,17 @@ function App() {
         <Stack.Screen name="AdmHome" component={AdmHomeScreen} options={{ headerShown: false}}/>
         <Stack.Screen name="AdmArea" component={AdmAreaScreen} options={{ headerShown: false}}/>
         <Stack.Screen name="AdmAreaUpdate" component={AdmAreaUpdateScreen} options={{ headerShown: false}}/>
+        <Stack.Screen name="AdmConteudo" component={AdmConteudoScreen} options={{ headerShown: false}}/>
+        <Stack.Screen name="AdmConteudoUpdate" component={AdmConteudoUpdateScreen} options={{ headerShown: false}}/>
+        <Stack.Screen name="AdmDesafio" component={AdmDesafioScreen} options={{ headerShown: false}}/>
+        <Stack.Screen name="AdmDesafioUpdate" component={AdmDesafioUpdateScreen} options={{ headerShown: false}}/>
+
+
+        
+        
+        
         {/*<Stack.Screen name="AdmDesafio" component={AdmDesafioScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="AdmConteudo" component={AdmConteudoScreen} options={{ headerShown: false}}/>  */}
+          */}
       </Stack.Navigator>
     </NavigationContainer>
     );
@@ -508,14 +517,16 @@ function ProfileScreen({navigation, route}) {
 )
 }
 
+{/*                         FUNÇÕES DO ADM                         */}
+
 function AdmHomeScreen({navigation, route}) {
   const { adm } = route.params;
   return(
     <SafeAreaView>
       <View>
         <Button title="Area" onPress={() => navigation.navigate("AdmArea", {user:adm})}/>
-        <Button title="Desafios" onPress={() => navigation.navigate("AdmArea", {user:adm})}/>
-        <Button title="Conteudos" onPress={() => navigation.navigate("AdmConteudos", {user:adm})}/>
+        <Button title="Desafios" onPress={() => navigation.navigate("AdmDesafio", {user:adm})}/>
+        <Button title="Conteudos" onPress={() => navigation.navigate("AdmConteudo", {user:adm})}/>
       </View>
     </SafeAreaView>
   )
@@ -528,7 +539,8 @@ function AdmAreaScreen({navigation, route}){
       await deleteDoc(doc(db, "areas", areaID));
       
       alert("Usuário excluído com sucesso!");
-      navigation.navigate('AdmArea');
+      const updatedAreas = areas.filter(area => area.id !== areaID);
+      setAreas(updatedAreas);
   } catch (e) {
     console.error("Erro ao excluir area: ", e);
     }
@@ -560,70 +572,85 @@ function AdmAreaScreen({navigation, route}){
 
 }, [])
  
-  return(
-    areas.map((area, index) => (
-      <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
+  return( 
+    <SafeAreaView>
+     <View>
+        <Button tittle="criar area" onPress={() => navigation.navigate("AdmAreaUpdate")}/>
+     </View>
+     <View style={{ display: "flex", flexDirection: "row", gap: 20, flexWrap: "wrap", alignItems: "center", alignContent: "center", justifyContent: "center"}}>
+        {areas.map((area, index) => (
+            <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
+            
 
-        <View style={{ borderRadius: 60, backgroundColor: area.cor, width: 80, height: 80 }}>
-          <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{area.icon}</Text>
-        </View>
+              <View style={{ borderRadius: 60, backgroundColor: area.cor, width: 80, height: 80 }}>
+                <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{area.icon}</Text>
+              </View>
 
-        <View>
-          <Text style={{ fontSize: 20, textAlign: "center" }}>{area.titulo}</Text>
-        </View>
+              <View>
+                <Text style={{ fontSize: 20, textAlign: "center" }}>{area.titulo}</Text>
+              </View>
 
-        <View>
-          <Text style={{ fontSize: 20, textAlign: "center" }}>{area.cor}</Text>
-        </View>
+              <View>
+                <Text style={{ fontSize: 20, textAlign: "center" }}>{area.cor}</Text>
+              </View>
 
-        <View>
-          <Button title="mude a area" onPress={() => navigation.navigate("AdmAreaUpdate", {areaID:area.id})}/>
-        </View>
-
-
-        <View>
-          <Button tittle="deleta a area" onPress={() =>deletearea(area.id)}/>
-        </View>
+              <View>
+                <Button title="mude a area" onPress={() => navigation.navigate("AdmAreaUpdate", {areaID:area.id})}/>
+              </View>
 
 
-      </View>
-    ))
-  )
+              <View>
+                <Button title="deleta a area" onPress={() =>deletearea(area.id)}/>
+              </View>
+            </View>
+          ) 
+          )}
+    </View>
+    </SafeAreaView>
+    );
 }
 
 function AdmAreaUpdateScreen({navigation, route}) {
-  const { areaID } = route.params;
-  const [area, setArea] = useState({});
+  const { areaID } = route.params || {};
   const [titulo, setTitulo] = useState('');
   const [icon, setIcon] = useState('');
   const [cor, setCor] = useState('');
 
-  console.log(areaID);
-  useEffect(() => {
+  useEffect(() => { 
     const getArea = async () =>{
       try{ 
-        const docRef = doc(db, "areas", areaID);
-        const queryArea = await getDoc(docRef);
+        if(areaID){
+          const docRef = doc(db, "areas", areaID);
+          const queryArea = await getDoc(docRef);
+          console.log("ID da área:", areaID);
+          console.log("Documento existe?", queryArea.exists());
+          if(queryArea.exists()){        
+            setCor(queryArea.data().cor);
+            setIcon(queryArea.data().icon);
+            setTitulo(queryArea.data().titulo);
+        }}
+    } catch(e){
+        console.log("ocorreu um erro", e)
+    }
+  }
+    getArea();
+  }, [areaID]);
 
-        if(!queryArea.empty){
-          setArea({
-            id: queryArea.id, ...
-            queryArea.data()
-          });
-          setCor(queryArea.data().cor);
-          setIcon(queryArea.data().icon);
-          setTitulo(queryArea.data().titulo);
-          alert('foi pra edit');
-        }else {
-          console.log("Nenhum documento encontrado!");
+  const EditSaveArea = async () =>{
+      try{ 
+        if(areaID){
+         await updateDoc(doc(db, "areas", areaID), {cor,icon,titulo});
+        }
+        else {
+          const docRef = await addDoc(collection(db, "areas"), {cor,icon,titulo,createdAt: new Date()});
+          navigation.goBack();
         }
     } catch(e){
         console.log("ocorreu um erro", e)
-    }}
-    getArea();
-  }, [areaID])
- 
+    }
+  }
   return(
+      
       <SafeAreaView style={styles.container}>
 
       <View style={styles.container}>
@@ -644,9 +671,293 @@ function AdmAreaUpdateScreen({navigation, route}) {
         </View>
 
 
-        <View> 
-          <Button style={styles.Button} title="Cadastrar" />
+        <View>         
+          <Button style={styles.Button} title={areaID ? "Atualizar" : "Cadastrar"} onPress={EditSaveArea}/>
         </View>
+       </View>
+  </SafeAreaView>
+  );
+}
+
+  {/*                    ADM CONTEUDOS                 */}
+
+
+function AdmConteudoScreen({navigation, route}){
+  const [conteudos, setConteudos] = useState([])
+  const deleteConteudo = async (conteudoID) =>{
+    try {
+      await deleteDoc(doc(db, "conteudos", conteudoID));
+      
+      alert("Usuário excluído com sucesso!");
+      navigation.navigate('AdmConteudo');
+  } catch (e) {
+    console.error("Erro ao excluir conteudo: ", e);
+    }
+  }
+  useEffect(() => {
+    const getConteudos = async () => {
+      try {
+        const q = query(
+          collection(db, "conteudos"),
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const listConteudos = [];
+          querySnapshot.forEach((doc) => {
+            listConteudos.push({id:doc.id, ... doc.data()})
+          });
+          setConteudos(listConteudos)
+        } else {
+          alert("Não há Conteúdos cadastrados!");
+        }
+      } catch (err) {
+        console.log("ERROR: ", err);
+        alert("Houve um erro. Contate o suporte.");
+      }
+    }
+    getConteudos();
+
+}, [])
+ 
+  return( 
+    <SafeAreaView>
+     <View>
+        <Button title="adicionar conteúdo" onPress={() => navigation.navigate("AdmConteudoUpdate")}/>
+     </View>
+
+      <View style={{ display: "flex", flexDirection: "row", gap: 20, flexWrap: "wrap", alignItems: "center", alignContent: "center", justifyContent: "center"}}>
+        {conteudos.map((conteudo, index) => (
+            <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
+              <View style={{ borderRadius: 60, width: 80, height: 80 }}>
+                <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{conteudo.texto}</Text>
+              </View>
+        
+              <View>
+                <Button title="edit" onPress={() => navigation.navigate("AdmConteudoUpdate", {conteudoID: conteudo.id})}/>
+              </View>
+
+
+              <View>
+                <Button tittle="delete" onPress={() =>deleteConteudo()}/>
+              </View>
+            </View>
+          ) 
+        )}
+      </View>
+    </SafeAreaView>
+  );
+    
+}
+
+function AdmConteudoUpdateScreen({navigation, route}) {
+  const { conteudoID } = route.params || {};
+  const [texto, setTexto] = useState('');
+  useEffect(() => { 
+    const getConteudo = async () =>{
+      try{ 
+        if(conteudoID){
+          const docRef = doc(db, "conteudos", conteudoID);
+          const queryConteudo = await getDoc(docRef);
+          console.log("ID do conteúdo:", conteudoID);
+          console.log("Documento existe?", queryConteudo.exists());
+          if(queryConteudo.exists()){        
+            setTexto(queryConteudo.data().texto);
+        }}
+    } catch(e){
+        console.log("ocorreu um erro", e)
+    }
+  }
+    getConteudo();
+  }, [conteudoID]);
+
+  const EditSaveConteudo = async () =>{
+      try{ 
+        if(conteudoID){
+         await updateDoc(doc(db, "conteudos", conteudoID), {texto});
+        }
+        else {
+          const docRef = await addDoc(collection(db, "conteudos"), {texto,createdAt: new Date()});
+          navigation.goBack();
+        }
+    } catch(e){
+        console.log("ocorreu um erro", e)
+    }
+  }
+  return(
+      
+      <SafeAreaView style={styles.container}>
+
+      <View style={styles.container}>
+
+        <View style={styles.InputContainer}>
+          <Text style={styles.Label}>texto: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={texto} onChangeText={setTexto}/>
+        </View>
+
+        <View>         
+          <Button style={styles.Button} title={conteudoID ? "Atualizar" : "Cadastrar"} onPress={EditSaveConteudo}/>
+        </View>
+
+       </View>
+  </SafeAreaView>
+  );
+}
+
+{/*         ADM DESAFIOS            */}
+
+function AdmDesafioScreen({navigation, route}){
+  const [desafios, setDesafios] = useState([])
+  const deleteDesafios = async (desafioID) =>{
+    try {
+      await deleteDoc(doc(db, "desafios", desafioID));
+      
+      alert("Usuário excluído com sucesso!");
+      navigation.navigate('AdmDesafio');
+  } catch (e) {
+    console.error("Erro ao excluir conteudo: ", e);
+    }
+  }
+  useEffect(() => {
+    const getDesafios = async () => {
+      try {
+        const q = query(
+          collection(db, "desafios"),
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const listDesafios = [];
+          querySnapshot.forEach((doc) => {
+            listDesafios.push({id:doc.id, ... doc.data()})
+          });
+          setDesafios(listDesafios)
+        } else {
+          alert("Não há desafios cadastrados!");
+        }
+      } catch (err) {
+        console.log("ERROR: ", err);
+        alert("Houve um erro. Contate o suporte.");
+      }
+    }
+    getDesafios();
+
+}, [])
+ 
+  return( 
+    <SafeAreaView>
+     <View>
+        <Button title="adicionar desafio" onPress={() => navigation.navigate("AdmDesafioUpdate")}/>
+     </View>
+
+      <View style={{ display: "flex", flexDirection: "row", gap: 20, flexWrap: "wrap", alignItems: "center", alignContent: "center", justifyContent: "center"}}>
+        {desafios.map((desafio, index) => (
+            <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
+              <View style={{ borderRadius: 60, width: 80, height: 80 }}>
+                <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{desafio.foto}</Text>
+              </View>
+              
+              <View style={{ borderRadius: 60, width: 80, height: 80 }}>
+                <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{desafio.nivel}</Text>
+              </View>
+
+              <View style={{ borderRadius: 60, width: 80, height: 80 }}>
+                <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{desafio.texto}</Text>
+              </View>
+              
+              <View style={{ borderRadius: 60, width: 80, height: 80 }}>
+                <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{desafio.titulo}</Text>
+              </View>
+
+              <View>
+                <Button title="edit" onPress={() => navigation.navigate("AdmDesafioUpdate", {condesafioID: desafio.id})}/>
+              </View>
+
+
+              <View>
+                <Button tittle="delete" onPress={() =>deleteDesafios()}/>
+              </View>
+            </View>
+          ) 
+        )}
+      </View>
+    </SafeAreaView>
+  );
+    
+}
+
+function AdmDesafioUpdateScreen({navigation, route}) {
+  const { desafioID } = route.params || {};
+  const [texto, setTexto] = useState('');
+  const [foto, setFoto] = useState('');
+  const [nivel, setNivel] = useState('');
+  const [titulo, setTitulo] = useState('');
+  useEffect(() => { 
+    const getDesafio = async () =>{
+      try{ 
+        if(desafioID){
+          const docRef = doc(db, "desafios", desafioID);
+          const queryDesafio = await getDoc(docRef);
+          console.log("ID do desafio:", desafioID);
+          console.log("Documento existe?", queryDesafio.exists());
+          if(queryDesafio.exists()){        
+            setTexto(queryDesafio.data().texto);
+            setFoto(queryDesafio.data().foto);
+            setNivel(queryDesafio.data().nivel);
+            setTitulo(queryDesafio.data().titulo);
+        }}
+    } catch(e){
+        console.log("ocorreu um erro", e)
+    }
+  }
+    getDesafio();
+  }, [desafioID]);
+
+  const EditSaveDesafio = async () =>{
+      try{ 
+        if(desafioID){
+         await updateDoc(doc(db, "desafios", desafioID), {foto,nivel,texto,titulo});
+        }
+        else {
+          const docRef = await addDoc(collection(db, "desafios"), {foto,nivel,texto,titulo,createdAt: new Date()});
+          navigation.goBack();
+        }
+    } catch(e){
+        console.log("ocorreu um erro", e)
+    }
+  }
+  return(
+      
+      <SafeAreaView style={styles.container}>
+
+      <View style={styles.container}>
+
+        <View style={styles.InputContainer}>
+          <Text style={styles.Label}>foto: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={foto} onChangeText={setFoto}/>
+        </View>
+
+        <View style={styles.InputContainer}>
+          <Text style={styles.Label}>nivel: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={nivel} onChangeText={setNivel}/>
+        </View>
+
+        <View style={styles.InputContainer}>
+          <Text style={styles.Label}>texto: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={texto} onChangeText={setTexto}/>
+        </View>
+
+        <View style={styles.InputContainer}>
+          <Text style={styles.Label}>titulo: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={titulo} onChangeText={setTitulo}/>
+        </View>
+
+        <View>         
+          <Button style={styles.Button} title={desafioID ? "Atualizar" : "Cadastrar"} onPress={EditSaveDesafio}/>
+        </View>
+
        </View>
   </SafeAreaView>
   );
