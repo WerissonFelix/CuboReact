@@ -1,3 +1,13 @@
+import { FontAwesome6 } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { collection, getDocs,  query } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { Image,  Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-web';
+import styles from './Style/style';
+
+import { db } from './firebase'
+
 function HomeScreen({ navigation, route}) {
 
   const { user } = route.params;

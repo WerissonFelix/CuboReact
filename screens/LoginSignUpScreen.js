@@ -1,3 +1,10 @@
+import { Text, TouchableOpacity, View } from 'react-native';
+import { Button } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-web';
+import styles from './Style/style';
+import { StatusBar } from 'expo-status-bar'
+import { db } from './firebase';
+
 function LoginSignUpScreen({navigation}) {
 
   return (

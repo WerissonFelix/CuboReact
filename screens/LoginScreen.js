@@ -1,3 +1,12 @@
+import { collection, getDocs, query,where } from 'firebase/firestore';
+import { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { Button, Input } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-web';
+import { db } from './firebase';
+import { StatusBar } from 'expo-status-bar';
+import styles from './Style/style';
+
 
 function LoginScreen({navigation, route}) {
   const [email, setEmail] = useState('');

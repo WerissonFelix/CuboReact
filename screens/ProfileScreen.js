@@ -1,3 +1,14 @@
+import { Picker } from '@react-native-picker/picker';
+import { updateDoc, getDoc } from 'firebase/firestore';
+import {  useState } from 'react';
+import { Text, View } from 'react-native';
+import { Button, Input } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-web';
+import styles from './Style/style';
+
+import { db } from './firebase';
+
+
 function ProfileScreen({navigation, route}) {
   const { user } = route.params;
   const [nome, setNome] = useState(user.nome);

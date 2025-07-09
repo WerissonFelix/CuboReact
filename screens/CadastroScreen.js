@@ -1,3 +1,12 @@
+import { addDoc, collection} from 'firebase/firestore';
+import { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { Button, Input } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-web';
+import { db } from './firebase';
+import styles from './Style/style';
+
+
 function CadastroScreen({navigation}){
   const [nome, setNome] = useState('');
   const [escolaridade, setEscolaridade] = useState("Selecionar Escolaridade");
