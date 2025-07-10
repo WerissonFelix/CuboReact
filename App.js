@@ -7,7 +7,10 @@ import LoginScreen from './screens/LoginScreen';
 import LoginSignUpScreen from './screens/LoginSignUpScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import StartScreen from './screens/StartScreen';
+import AreaScreen from './screens/AreaScreen';
+import DesafioScreen from './screens/DesafioScreen';
 
+{/* ADM */}
 import AdmHomeScreen from './screens/screensAdm/AdmHomeScreen';
 import AdmAreaScreen from './screens/screensAdm/AdmAreaScreen';
 import AdmAreaUpdateScreen from './screens/screensAdm/AdmAreaUpdateScreen';
@@ -38,13 +41,8 @@ function App() {
         <Stack.Screen name="AdmConteudoUpdate" component={AdmConteudoUpdateScreen} options={{ headerShown: false}}/>
         <Stack.Screen name="AdmDesafio" component={AdmDesafioScreen} options={{ headerShown: false}}/>
         <Stack.Screen name="AdmDesafioUpdate" component={AdmDesafioUpdateScreen} options={{ headerShown: false}}/>
-
-
-        
-        
-        
-        {/*<Stack.Screen name="AdmDesafio" component={AdmDesafioScreen} options={{ headerShown: false}}/>
-          */}
+        <Stack.Screen name="Desafio" component={DesafioScreen} options={{ headerShown: false}}/>
+        <Stack.Screen name="Area" component={AreaScreen} options={{ headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
     );

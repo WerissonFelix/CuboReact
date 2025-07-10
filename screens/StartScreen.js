@@ -6,7 +6,8 @@ import { Button, } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-web';
 import styles from './Style/style';
 
-import { db } from './firebase';
+import { db }  from './firebase';
+
 
 function StartScreen({navigation}) {
   const [fontsLoaded] = useFonts({
@@ -45,7 +46,7 @@ function StartScreen({navigation}) {
           <Text style={{ color: "red" }}>O</Text>
         </Text>
         <Text style={{ fontFamily: 'Squada', fontSize: 20 }}>Bem-vind@</Text>
-        <Button title="Testar Firebase" onPress={testFirebase} />
+        <Button title="Testar Firebase" onPress={() => testFirebase} />
       </View>
     </SafeAreaView>
   )

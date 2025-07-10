@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore} from 'firebase/firestore';
 
+
 const config = {
     apiKey: "AIzaSyCAmQ5YiGUE3qaWr7tD38aXyXxgLROJ_sY",
     authDomain: "cubo.firebaseapp.com",

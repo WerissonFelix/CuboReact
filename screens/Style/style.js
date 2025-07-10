@@ -78,9 +78,67 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25
+  },
+
+
+
+  questionContainer: {
+    marginBottom: 20,
+    padding: 20,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    width: '100%',
+  },
+  questionText: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#333',
+    textAlign: 'center',
+  },
+  optionButton: {
+    backgroundColor: '#4e73df',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginVertical: 8,
+    width: '100%',
+  },
+  optionText: {
+    color: '#fff',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  scoreContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 30,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    elevation: 4,
+  },
+  scoreText: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#10ac84',
+    marginBottom: 20,
+  },
+  resetButton: {
+    backgroundColor: '#ff6b6b',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  resetButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
   }
 });
-
-
 
 export default styles;

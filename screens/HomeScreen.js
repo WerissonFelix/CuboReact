@@ -2,10 +2,11 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { collection, getDocs,  query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import { Image,  Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-web';
 import styles from './Style/style';
-
+import { Button } from 'react-native-elements';
 import { db } from './firebase'
 
 function HomeScreen({ navigation, route}) {
@@ -121,6 +122,11 @@ function HomeScreen({ navigation, route}) {
               {areas.map((area, index) => (
                 <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
 
+                  <TouchableOpacity onPress={() => navigation.navigate("Area", {areaID:area.id})}>
+                    <View style={[styles.Icon, { backgroundColor: "orange"}]} onPress={() => navigation.navigate("Area")}>
+                    </View>
+                  </TouchableOpacity>
+
                   <View style={{ borderRadius: 60, backgroundColor: area.cor, width: 80, height: 80 }}>
                     <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{area.icon}</Text>
                   </View>
@@ -152,7 +158,9 @@ function HomeScreen({ navigation, route}) {
                   <View style={{ borderRadius: 60, width: 80, height: 80 }}>
                      <Image source={{ uri: `https://raw.githubusercontent.com/Idinaldo/images-holder/refs/heads/main/assets/images/${desafio.foto}`}} style={{ width: 100, height: 100, borderRadius: 20 }} />
                   </View>
-
+                  <View>
+                    <Button title='nomeQz' onPress={() => navigation.navigate('Desafio', {desafioID: desafio.id} )} />
+                  </View>
                   <View style={{ width: "100%"}}>
                     <Text style={{ fontSize: 20, textAlign: "center" }}>{desafio.titulo}</Text>
                   </View>
@@ -185,7 +193,12 @@ function HomeScreen({ navigation, route}) {
             <Image source={{ uri: "https://raw.githubusercontent.com/Idinaldo/images-holder/refs/heads/main/assets/images/usericon.jpg"}} style={{ height: 50, width: 50}} />
             <Text style={{ color: "white"}}>Perfil</Text>
           </View>
-          </TouchableOpacity>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.resetButton} onPress={() => navigation.navigate("Desafio")}>
+            <View onPress={() => navigation.navigate('Desafio')}>
+                <Text style={styles.resetButtonText}>Entrar quiz legal</Text>
+            </View>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

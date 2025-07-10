@@ -1,3 +1,6 @@
+
+{/**/}
+
 import { initializeApp } from 'firebase/app';
 import { collection, doc, getDocs, query, deleteDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -24,6 +27,7 @@ function AdmDesafioScreen({navigation, route}){
   useEffect(() => {
     const getDesafios = async () => {
       try {
+        
         const q = query(
           collection(db, "desafios"),
         );

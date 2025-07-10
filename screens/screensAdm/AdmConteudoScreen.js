@@ -11,6 +11,7 @@ import {db} from '../firebase';
 
 function AdmConteudoScreen({navigation, route}){
   const [conteudos, setConteudos] = useState([])
+
   const deleteConteudo = async (conteudoID) =>{
     try {
       await deleteDoc(doc(db, "conteudos", conteudoID));

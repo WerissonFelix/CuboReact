@@ -11,6 +11,7 @@ import {db} from '../firebase';
 
 function AdmDesafioUpdateScreen({navigation, route}) {
   const { desafioID } = route.params || {};
+  const [area, setArea] = useState('');
   const [texto, setTexto] = useState('');
   const [foto, setFoto] = useState('');
   const [nivel, setNivel] = useState('');
@@ -23,7 +24,8 @@ function AdmDesafioUpdateScreen({navigation, route}) {
           const queryDesafio = await getDoc(docRef);
           console.log("ID do desafio:", desafioID);
           console.log("Documento existe?", queryDesafio.exists());
-          if(queryDesafio.exists()){        
+          if(queryDesafio.exists()){
+            setArea(queryDesafio.data().area)        
             setTexto(queryDesafio.data().texto);
             setFoto(queryDesafio.data().foto);
             setNivel(queryDesafio.data().nivel);
@@ -39,10 +41,10 @@ function AdmDesafioUpdateScreen({navigation, route}) {
   const EditSaveDesafio = async () =>{
       try{ 
         if(desafioID){
-         await updateDoc(doc(db, "desafios", desafioID), {foto,nivel,texto,titulo});
+         await updateDoc(doc(db, "desafios", desafioID), {foto,nivel,texto,titulo, area});
         }
         else {
-          const docRef = await addDoc(collection(db, "desafios"), {foto,nivel,texto,titulo,createdAt: new Date()});
+          const docRef = await addDoc(collection(db, "desafios"), {foto,nivel,texto,titulo,area,createdAt: new Date()});
           navigation.goBack();
         }
     } catch(e){
@@ -73,6 +75,11 @@ function AdmDesafioUpdateScreen({navigation, route}) {
         <View style={styles.InputContainer}>
           <Text style={styles.Label}>titulo: </Text>
           <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={titulo} onChangeText={setTitulo}/>
+        </View>
+
+        <View style={styles.InputContainer}>
+          <Text style={styles.Label}>area: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={area} onChangeText={setArea}/>
         </View>
 
         <View>         

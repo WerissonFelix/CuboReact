@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { addDoc, collection, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, updateDoc, getDoc, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
@@ -12,6 +12,7 @@ import {db} from '../firebase';
 function AdmConteudoUpdateScreen({navigation, route}) {
   const { conteudoID } = route.params || {};
   const [texto, setTexto] = useState('');
+  const [area, setArea] = useState('');
   useEffect(() => { 
     const getConteudo = async () =>{
       try{ 
@@ -33,10 +34,10 @@ function AdmConteudoUpdateScreen({navigation, route}) {
   const EditSaveConteudo = async () =>{
       try{ 
         if(conteudoID){
-         await updateDoc(doc(db, "conteudos", conteudoID), {texto});
+         await updateDoc(doc(db, "conteudos", conteudoID), {texto, area:"M6sOHm7NEtslvL3g2rlE"});
         }
         else {
-          const docRef = await addDoc(collection(db, "conteudos"), {texto,createdAt: new Date()});
+          const docRef = await addDoc(collection(db, "conteudos"), {texto, area:"M6sOHm7NEtslvL3g2rlE", createdAt: new Date()});
           navigation.goBack();
         }
     } catch(e){
@@ -53,6 +54,12 @@ function AdmConteudoUpdateScreen({navigation, route}) {
           <Text style={styles.Label}>texto: </Text>
           <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={texto} onChangeText={setTexto}/>
         </View>
+
+       <View style={styles.InputContainer}>
+          <Text style={styles.Label}>area: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={area} onChangeText={setArea}/>
+        </View>
+
 
         <View>         
           <Button style={styles.Button} title={conteudoID ? "Atualizar" : "Cadastrar"} onPress={EditSaveConteudo}/>
