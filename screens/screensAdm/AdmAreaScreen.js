@@ -10,6 +10,8 @@ import styles from '../Style/style';
 import {db} from '../firebase';
 
 function AdmAreaScreen({navigation, route}){
+  const { adm } = route.params
+  
   const [areas, setAreas] = useState([])
   const deletearea = async (areaID) =>{
     try {
@@ -72,7 +74,7 @@ function AdmAreaScreen({navigation, route}){
               </View>
 
               <View>
-                <Button title="mude a area" onPress={() => navigation.navigate("AdmAreaUpdate", {areaID:area.id})}/>
+                <Button title="mude a area" onPress={() => navigation.navigate("AdmAreaUpdate", {areaID:area.id, adm: adm})}/>
               </View>
 
 
@@ -82,6 +84,10 @@ function AdmAreaScreen({navigation, route}){
             </View>
           ) 
           )}
+    </View>
+    
+    <View>
+      <Button title="Voltar" onPress={() => navigation.navigate('AdmHome', {adm:adm})}/>
     </View>
     </SafeAreaView>
     );

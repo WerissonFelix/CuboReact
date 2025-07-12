@@ -122,7 +122,7 @@ function HomeScreen({ navigation, route}) {
               {areas.map((area, index) => (
                 <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
 
-                  <TouchableOpacity onPress={() => navigation.navigate("Area", {areaID:area.id})}>
+                  <TouchableOpacity onPress={() => navigation.navigate("Area", {areaID:area.id, user:user})}>
                     <View style={[styles.Icon, { backgroundColor: "orange"}]} onPress={() => navigation.navigate("Area")}>
                     </View>
                   </TouchableOpacity>
@@ -179,6 +179,8 @@ function HomeScreen({ navigation, route}) {
         <View>
           <FontAwesome6 name="house-chimney" size={40} color="yellow" />
           <Text style={{ color: "white"}}>Home</Text>
+
+          <Button style={styles.Button} title="Logout" onPress={() => navigation.navigate('LoginSignUp')}/>
         </View>
         <View>
           <Image source={{ uri: "https://raw.githubusercontent.com/Idinaldo/images-holder/refs/heads/main/assets/images/challenges.jpg"}} style={{ height: 50, width: 50}} />
@@ -194,7 +196,7 @@ function HomeScreen({ navigation, route}) {
             <Text style={{ color: "white"}}>Perfil</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.resetButton} onPress={() => navigation.navigate("Desafio")}>
+        <TouchableOpacity style={styles.resetButton} onPress={() => navigation.navigate("Desafio",{user:user})}>
             <View onPress={() => navigation.navigate('Desafio')}>
                 <Text style={styles.resetButtonText}>Entrar quiz legal</Text>
             </View>

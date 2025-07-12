@@ -10,7 +10,7 @@ import styles from '../Style/style';
 import {db} from '../firebase';
 
 function AdmDesafioUpdateScreen({navigation, route}) {
-  const { desafioID } = route.params || {};
+  const { desafioID, adm } = route.params || {};
   const [area, setArea] = useState('');
   const [texto, setTexto] = useState('');
   const [foto, setFoto] = useState('');
@@ -84,6 +84,10 @@ function AdmDesafioUpdateScreen({navigation, route}) {
 
         <View>         
           <Button style={styles.Button} title={desafioID ? "Atualizar" : "Cadastrar"} onPress={EditSaveDesafio}/>
+        </View>
+
+        <View>         
+          <Button style={styles.Button} title={"Voltar"} onPress={() => navigation.navigate('AdmDesafio', {adm:adm})}/>
         </View>
 
        </View>

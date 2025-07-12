@@ -10,6 +10,7 @@ import styles from '../Style/style';
 import {db} from '../firebase';
 
 function AdmConteudoScreen({navigation, route}){
+  const { adm } = route.params
   const [conteudos, setConteudos] = useState([])
 
   const deleteConteudo = async (conteudoID) =>{
@@ -63,16 +64,19 @@ function AdmConteudoScreen({navigation, route}){
               </View>
         
               <View>
-                <Button title="edit" onPress={() => navigation.navigate("AdmConteudoUpdate", {conteudoID: conteudo.id})}/>
+                <Button title="edit" onPress={() => navigation.navigate("AdmConteudoUpdate", {conteudoID: conteudo.id, adm:adm})}/>
               </View>
 
 
               <View>
-                <Button tittle="delete" onPress={() =>deleteConteudo()}/>
+                <Button title="delete" onPress={() =>deleteConteudo()}/>
               </View>
             </View>
           ) 
         )}
+      </View>
+      <View>         
+        <Button style={styles.Button} title={"Voltar"} onPress={() => navigation.navigate('AdmHome', {adm:adm})}/>
       </View>
     </SafeAreaView>
   );

@@ -61,6 +61,7 @@ function LoginScreen({navigation, route}) {
             <Input inputContainerStyle={{ borderBottomWidth: 0 }} style={styles.Input} placeholder="Senha" secureTextEntry={true} onChangeText={setSenha}/>
           </View>
           <Button style={styles.Button} title="Logar" onPress={verifyUser}/>
+          <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('LoginSignUp')}/>
           <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
             <Text style={{ color: "blue" }}>Ainda não tem conta? Cadastre-se</Text>
           </TouchableOpacity>

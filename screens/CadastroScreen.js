@@ -68,6 +68,7 @@ return (
         </View>
 
         <Button style={styles.Button} title="Cadastrar" onPress={saveUser}/>
+        <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('LoginSignUp')}/>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text style={{ color: "blue" }}>Já tem conta? Faça Login</Text>
         </TouchableOpacity>

@@ -14,9 +14,12 @@ function AdmHomeScreen({navigation, route}) {
   return(
     <SafeAreaView>
       <View>
-        <Button title="Area" onPress={() => navigation.navigate("AdmArea", {user:adm})}/>
-        <Button title="Desafios" onPress={() => navigation.navigate("AdmDesafio", {user:adm})}/>
-        <Button title="Conteudos" onPress={() => navigation.navigate("AdmConteudo", {user:adm})}/>
+        <Button title="Area" onPress={() => navigation.navigate("AdmArea", {adm:adm})}/>
+        <Button title="Desafios" onPress={() => navigation.navigate("AdmDesafio", {adm:adm})}/>
+        <Button title="Conteudos" onPress={() => navigation.navigate("AdmConteudo", {adm:adm})}/>
+      </View>
+      <View>
+        <Button title="Voltar" onPress={() => navigation.navigate('LoginSignUp')}/>
       </View>
     </SafeAreaView>
   )

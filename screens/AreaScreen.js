@@ -8,7 +8,7 @@ import styles from './Style/style';
 
 
 function AreaScreen({navigation, route}){
-  const { areaID } = route.params;
+  const { areaID, user } = route.params;
   const [area, setArea] = useState([]);
   const [conteudos, setConteudos] = useState([]);
   
@@ -49,6 +49,8 @@ function AreaScreen({navigation, route}){
 }, [])
   return (
     <View style={styles.container}>
+      <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Home', {user:user})}/>
+      
       <Text style={styles.title}>{area.titulo}</Text>
       
       {/* Lista de conteúdos */}

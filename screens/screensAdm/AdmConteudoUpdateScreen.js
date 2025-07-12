@@ -10,7 +10,7 @@ import styles from '../Style/style';
 import {db} from '../firebase';
 
 function AdmConteudoUpdateScreen({navigation, route}) {
-  const { conteudoID } = route.params || {};
+  const { conteudoID, adm } = route.params || {};
   const [texto, setTexto] = useState('');
   const [area, setArea] = useState('');
   useEffect(() => { 
@@ -63,6 +63,11 @@ function AdmConteudoUpdateScreen({navigation, route}) {
 
         <View>         
           <Button style={styles.Button} title={conteudoID ? "Atualizar" : "Cadastrar"} onPress={EditSaveConteudo}/>
+        </View>
+
+        
+        <View>         
+          <Button style={styles.Button} title={"Voltar"} onPress={() => navigation.navigate('AdmConteudo', {adm:adm})}/>
         </View>
 
        </View>

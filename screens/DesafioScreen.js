@@ -5,7 +5,8 @@ import { db } from './firebase';
 import styles from './Style/style';
 
 function DesafioScreen({ navigation, route }) {
-    const { desafioID } = route.params;
+    const { desafioID, user } = route.params;
+    
     
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
@@ -64,6 +65,7 @@ function DesafioScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
+            <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Home', {user:user})}/>
             {showScore ? (
                 <View style={styles.scoreContainer}> 
                     <Text style={styles.scoreText}>Você acertou {score} de {desafio.Quiz.length}</Text>

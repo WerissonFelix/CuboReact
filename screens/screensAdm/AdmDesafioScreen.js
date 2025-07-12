@@ -13,6 +13,7 @@ import styles from '../Style/style';
 import {db} from '../firebase';
 
 function AdmDesafioScreen({navigation, route}){
+  const { adm } = route.params;
   const [desafios, setDesafios] = useState([])
   const deleteDesafios = async (desafioID) =>{
     try {
@@ -78,16 +79,22 @@ function AdmDesafioScreen({navigation, route}){
               </View>
 
               <View>
-                <Button title="edit" onPress={() => navigation.navigate("AdmDesafioUpdate", {condesafioID: desafio.id})}/>
+                <Button title="edit" onPress={() => navigation.navigate("AdmDesafioUpdate", {condesafioID: desafio.id, adm:adm})}/>
               </View>
 
 
               <View>
-                <Button tittle="delete" onPress={() =>deleteDesafios()}/>
+                <Button title="delete" onPress={() =>deleteDesafios()}/>
               </View>
+
+
             </View>
           ) 
         )}
+      </View>
+      
+      <View>
+        <Button title="Voltar" onPress={() => navigation.navigate('AdmHome', {adm:adm})}/>
       </View>
     </SafeAreaView>
   );

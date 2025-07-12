@@ -24,18 +24,6 @@ function StartScreen({navigation}) {
     return () => clearTimeout(timer);
   }, [navigation]);
 
-  const testFirebase = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "usuarios"));
-      alert(` Conexão OK! Documentos: ${querySnapshot.size}`);
-    } catch (error) {
-      alert(`Erro: ${error.message}`);
-    }
-  };
-
-
-
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -46,7 +34,6 @@ function StartScreen({navigation}) {
           <Text style={{ color: "red" }}>O</Text>
         </Text>
         <Text style={{ fontFamily: 'Squada', fontSize: 20 }}>Bem-vind@</Text>
-        <Button title="Testar Firebase" onPress={() => testFirebase} />
       </View>
     </SafeAreaView>
   )

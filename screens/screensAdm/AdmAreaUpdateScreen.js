@@ -10,7 +10,8 @@ import styles from '../Style/style';
 import {db} from '../firebase';
 
 function AdmAreaUpdateScreen({navigation, route}) {
-  const { areaID } = route.params || {};
+  const { areaID, adm } = route.params || {};
+
   const [titulo, setTitulo] = useState('');
   const [icon, setIcon] = useState('');
   const [cor, setCor] = useState('');
@@ -73,6 +74,12 @@ function AdmAreaUpdateScreen({navigation, route}) {
         <View>         
           <Button style={styles.Button} title={areaID ? "Atualizar" : "Cadastrar"} onPress={EditSaveArea}/>
         </View>
+
+        
+        <View>
+          <Button title="Voltar" onPress={() => navigation.navigate('AdmArea', {adm:adm})}/>
+        </View>
+
        </View>
   </SafeAreaView>
   );
