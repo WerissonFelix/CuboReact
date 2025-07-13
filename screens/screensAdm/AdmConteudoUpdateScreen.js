@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { addDoc, collection, doc, updateDoc, getDoc, query } from 'firebase/firestore';
+import { Picker } from '@react-native-picker/picker';
+import { addDoc, collection, doc, updateDoc, getDoc, query,getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
@@ -12,38 +13,75 @@ import {db} from '../firebase';
 function AdmConteudoUpdateScreen({navigation, route}) {
   const { conteudoID, adm } = route.params || {};
   const [texto, setTexto] = useState('');
-  const [area, setArea] = useState('');
+  
+  const [area, setArea] = useState([]);
+  const [areaConteudo, setAreaConteudo] = useState('');
+  
   useEffect(() => { 
-    const getConteudo = async () =>{
-      try{ 
-        if(conteudoID){
-          const docRef = doc(db, "conteudos", conteudoID);
-          const queryConteudo = await getDoc(docRef);
-          console.log("ID do conteúdo:", conteudoID);
-          console.log("Documento existe?", queryConteudo.exists());
-          if(queryConteudo.exists()){        
-            setTexto(queryConteudo.data().texto);
-        }}
+    const getArea = async () =>{
+      const q = query(collection(db, "areas"));
+      const areaSnap = await getDocs(q);
+      try{
+        if(areaSnap){
+          const areas = [];
+          areaSnap.forEach((doc) => {
+            areas.push({ id: doc.id, ...doc.data() });
+          });
+          setArea(areas);
+      } else {
+         alert('fudeu');
+      } 
+         
     } catch(e){
         console.log("ocorreu um erro", e)
     }
   }
+    getArea();
+  }, []);
+  
+  
+  useEffect(() => {
+    const getConteudo = async () => {
+      try {
+        if (conteudoID) {
+          const docRef = doc(db, "conteudos", conteudoID);
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setTexto(data.texto || '');
+            setAreaConteudo(data.area || ''); // ATENÇÃO: Verifique se o campo no Firestore é "area" ou "areaConteudo"
+          }
+        }
+      } catch (e) {
+        console.error("Erro ao buscar conteúdo:", e);
+      }
+    };
     getConteudo();
   }, [conteudoID]);
 
-  const EditSaveConteudo = async () =>{
-      try{ 
-        if(conteudoID){
-         await updateDoc(doc(db, "conteudos", conteudoID), {texto, area:"M6sOHm7NEtslvL3g2rlE"});
-        }
-        else {
-          const docRef = await addDoc(collection(db, "conteudos"), {texto, area:"M6sOHm7NEtslvL3g2rlE", createdAt: new Date()});
-          navigation.goBack();
-        }
-    } catch(e){
-        console.log("ocorreu um erro", e)
+const EditSaveConteudo = async () => {
+    try {
+      const conteudoData = {
+        texto,
+        area: areaConteudo, // ATENÇÃO: Mantenha consistência com o nome do campo no Firestore
+        // Adicione outros campos necessários
+      };
+
+      if (conteudoID) {
+        await updateDoc(doc(db, "conteudos", conteudoID), conteudoData);
+      } else {
+        await addDoc(collection(db, "conteudos"), {
+          ...conteudoData,
+          createdAt: new Date()
+        });
+      }
+      navigation.goBack();
+    } catch (e) {
+      console.error("Erro ao salvar conteúdo:", e);
+      alert('Erro ao salvar: ' + e.message);
     }
-  }
+  };
   return(
       
       <SafeAreaView style={styles.container}>
@@ -55,10 +93,18 @@ function AdmConteudoUpdateScreen({navigation, route}) {
           <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={texto} onChangeText={setTexto}/>
         </View>
 
-       <View style={styles.InputContainer}>
-          <Text style={styles.Label}>area: </Text>
-          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: texto' value={area} onChangeText={setArea}/>
-        </View>
+        <View style={styles.InputContainer}>
+            <Text style={styles.Label}>Qual é a área nova do Conteúdo? </Text>
+            
+            <Picker selectedValue={areaConteudo} onValueChange={setAreaConteudo} dropdownIconColor="#999" style={styles.Picker}>
+              <Picker.Item label="Selecione a Área" value="#"/>
+            {area.map((area, index)=>(  
+                <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
+                <Picker.Item label={area.titulo} value={area.id} />
+                </View>
+              ))}
+              </Picker>       
+          </View>
 
 
         <View>         
@@ -67,7 +113,7 @@ function AdmConteudoUpdateScreen({navigation, route}) {
 
         
         <View>         
-          <Button style={styles.Button} title={"Voltar"} onPress={() => navigation.navigate('AdmConteudo', {adm:adm})}/>
+          <Button style={styles.Button} title={"Voltar"} onPress={() => navigation.navigate('AdmHome', {adm:adm})}/>
         </View>
 
        </View>

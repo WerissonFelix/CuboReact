@@ -79,6 +79,12 @@ function AdmAreaScreen({navigation, route}){
 
 
               <View>
+                <Button title="Crie um conteúdo" onPress={() => navigation.navigate("AdmAreaUpdate", {areaID:area.id, adm: adm})}/>
+              </View>
+
+
+
+              <View>
                 <Button title="deleta a area" onPress={() =>deletearea(area.id)}/>
               </View>
             </View>

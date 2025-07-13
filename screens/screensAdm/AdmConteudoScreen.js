@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { collection, doc, getDocs, query, deleteDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, deleteDoc, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -10,7 +10,7 @@ import styles from '../Style/style';
 import {db} from '../firebase';
 
 function AdmConteudoScreen({navigation, route}){
-  const { adm } = route.params
+  const { adm, areaID } = route.params
   const [conteudos, setConteudos] = useState([])
 
   const deleteConteudo = async (conteudoID) =>{
@@ -28,6 +28,7 @@ function AdmConteudoScreen({navigation, route}){
       try {
         const q = query(
           collection(db, "conteudos"),
+          where("area", "==", areaID)
         );
 
         const querySnapshot = await getDocs(q);
