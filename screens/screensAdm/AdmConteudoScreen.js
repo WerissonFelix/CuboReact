@@ -1,4 +1,3 @@
-import { initializeApp } from 'firebase/app';
 import { collection, doc, getDocs, query, deleteDoc, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
@@ -18,7 +17,7 @@ function AdmConteudoScreen({navigation, route}){
       await deleteDoc(doc(db, "conteudos", conteudoID));
       
       alert("Usuário excluído com sucesso!");
-      navigation.navigate('AdmConteudo');
+      navigation.navigate('AdmConteudo', {adm:adm});
   } catch (e) {
     console.error("Erro ao excluir conteudo: ", e);
     }
@@ -67,10 +66,14 @@ function AdmConteudoScreen({navigation, route}){
               <View>
                 <Button title="edit" onPress={() => navigation.navigate("AdmConteudoUpdate", {conteudoID: conteudo.id, adm:adm})}/>
               </View>
+                        
+              <View>
+                <Button title="ver desafios" onPress={() => navigation.navigate("AdmDesafio", {conteudoID: conteudo.id, adm:adm})}/>
+              </View>
 
 
               <View>
-                <Button title="delete" onPress={() =>deleteConteudo()}/>
+                <Button title="delete" onPress={() =>deleteConteudo(conteudo.id)}/>
               </View>
             </View>
           ) 

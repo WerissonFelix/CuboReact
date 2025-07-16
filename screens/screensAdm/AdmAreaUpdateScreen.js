@@ -11,6 +11,7 @@ import {db} from '../firebase';
 
 function AdmAreaUpdateScreen({navigation, route}) {
   const { areaID, adm } = route.params || {};
+  
 
   const [titulo, setTitulo] = useState('');
   const [icon, setIcon] = useState('');
@@ -40,10 +41,11 @@ function AdmAreaUpdateScreen({navigation, route}) {
       try{ 
         if(areaID){
          await updateDoc(doc(db, "areas", areaID), {cor,icon,titulo});
+          navigation.navigate('AdmHome', {adm:adm});
         }
         else {
-          const docRef = await addDoc(collection(db, "areas"), {cor,icon,titulo,createdAt: new Date()});
-          navigation.goBack();
+          await addDoc(collection(db, "areas"), {cor,icon,titulo,createdAt: new Date()});
+          navigation.navigate('AdmHome', {adm:adm});
         }
     } catch(e){
         console.log("ocorreu um erro", e)
@@ -77,7 +79,7 @@ function AdmAreaUpdateScreen({navigation, route}) {
 
         
         <View>
-          <Button title="Voltar" onPress={() => navigation.navigate('AdmArea', {adm:adm})}/>
+          <Button title="Voltar" onPress={() => navigation.navigate('AdmHome', {adm:adm})}/>
         </View>
 
        </View>

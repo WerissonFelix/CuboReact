@@ -1,7 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, deleteDoc,where, getDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { collection, doc, getDocs,  query, deleteDoc  } from 'firebase/firestore';
+import { useEffect, useState} from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-web';
 
@@ -13,6 +12,18 @@ function AdmHomeScreen({navigation, route}) {
   const { adm } = route.params;
   const [area, setArea] = useState([]);
   
+  
+const deletearea = async (areaID) =>{
+    try {
+      await deleteDoc(doc(db, "areas", areaID));
+      
+      alert("Usuário excluído com sucesso!");
+      const updatedAreas = area.filter(area => area.id !== areaID);
+      setArea(updatedAreas);
+  } catch (e) {
+    console.error("Erro ao excluir area: ", e);
+    }
+  }
   useEffect(() => {
     const getareas = async () => {
       try {
@@ -35,25 +46,29 @@ function AdmHomeScreen({navigation, route}) {
 }, [])
    return(  
      <SafeAreaView>
-      {area.map((a, index) => (
+      <Button title='criar area' onPress={() => navigation.navigate('AdmAreaUpdate')}></Button>
+      {area.map((area, index) => (
         <TouchableOpacity key={index} style={styles.card}>
           <View style={styles.cardBody}>
-            <Text style={styles.cardTitle}>{a.titulo}</Text>
-            <Text style={styles.cardSubtitle}>{a.titulo}</Text>
+            <Text style={styles.cardTitle}>{area.titulo}</Text>
             <View style={{ flex: 1, flexDirection: "row" }}>
-              <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={() => alert("pressed")}>
-                <Text style={[styles.btnText, styles.btnPrimaryText]}>Editar</Text>
+              <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={() => navigation.navigate('AdmAreaUpdate', {areaID:area.id, adm:adm})}>
+                <Text style={[styles.btnText, styles.btnPrimaryText]}>Editar Área</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.btn, styles.btnDanger]} onPress={() => alert("pressed")}>
-                <Text style={[styles.btnText, styles.btnDangerText]}>Excluir</Text>
+              <TouchableOpacity style={[styles.btn, styles.btnDanger]} onPress={() => deletearea(area.id)}>
+                <Text style={[styles.btnText, styles.btnDangerText]}>Excluir Área</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.btn, styles.btnSuccess]} onPress={() => alert("pressed")}>
+              <TouchableOpacity style={[styles.btn, styles.btnSuccess]} onPress={() => navigation.navigate('AdmConteudo', {areaID:area.id, adm:adm})}>
                 <Text style={[styles.btnText, styles.btnSuccessText]}>Ver Conteúdos</Text>
               </TouchableOpacity>
             </View>
           </View>
         </TouchableOpacity>
       ))}
+
+      <View>
+        <Button title="Voltar" onPress={() => navigation.navigate('LoginSignUp')}/>
+      </View>
     </SafeAreaView>
    )
 }

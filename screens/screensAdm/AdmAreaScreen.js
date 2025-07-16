@@ -54,7 +54,7 @@ function AdmAreaScreen({navigation, route}){
   return( 
     <SafeAreaView>
      <View>
-        <Button title="criar area" onPress={() => navigation.navigate("AdmAreaUpdate")}/>
+        <Button title="Criar area" onPress={() => navigation.navigate("AdmAreaUpdate")}/>
      </View>
      <View style={{ display: "flex", flexDirection: "row", gap: 20, flexWrap: "wrap", alignItems: "center", alignContent: "center", justifyContent: "center"}}>
         {areas.map((area, index) => (
@@ -74,18 +74,18 @@ function AdmAreaScreen({navigation, route}){
               </View>
 
               <View>
-                <Button title="mude a area" onPress={() => navigation.navigate("AdmAreaUpdate", {areaID:area.id, adm: adm})}/>
+                <Button title="Edite a area" onPress={() => navigation.navigate("AdmAreaUpdate", {areaID:area.id, adm: adm})}/>
               </View>
 
 
               <View>
-                <Button title="Crie um conteúdo" onPress={() => navigation.navigate("AdmAreaUpdate", {areaID:area.id, adm: adm})}/>
+                <Button title="Ver conteúdos relacionados a área" onPress={() => navigation.navigate("AdmConteudo", {areaID:area.id, adm: adm})}/>
               </View>
 
 
 
               <View>
-                <Button title="deleta a area" onPress={() =>deletearea(area.id)}/>
+                <Button title="Deleta a area" onPress={() =>deletearea(area.id)}/>
               </View>
             </View>
           ) 

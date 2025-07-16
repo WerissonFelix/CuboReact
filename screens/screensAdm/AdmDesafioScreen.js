@@ -1,8 +1,4 @@
-
-{/**/}
-
-import { initializeApp } from 'firebase/app';
-import { collection, doc, getDocs, query, deleteDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, deleteDoc, where} from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { Button} from 'react-native-elements';
@@ -13,14 +9,15 @@ import styles from '../Style/style';
 import {db} from '../firebase';
 
 function AdmDesafioScreen({navigation, route}){
-  const { adm } = route.params;
-  const [desafios, setDesafios] = useState([])
+  const { conteudoID, adm } = route.params;
+  const [desafios, setDesafios] = useState([]);
+  
   const deleteDesafios = async (desafioID) =>{
     try {
       await deleteDoc(doc(db, "desafios", desafioID));
       
       alert("Usuário excluído com sucesso!");
-      navigation.navigate('AdmDesafio');
+      navigation.navigate('AdmDesafio', {conteudoID:conteudoID});
   } catch (e) {
     console.error("Erro ao excluir conteudo: ", e);
     }
@@ -31,6 +28,7 @@ function AdmDesafioScreen({navigation, route}){
         
         const q = query(
           collection(db, "desafios"),
+          where("conteudo","==", conteudoID)
         );
 
         const querySnapshot = await getDocs(q);
@@ -56,35 +54,28 @@ function AdmDesafioScreen({navigation, route}){
   return( 
     <SafeAreaView>
      <View>
-        <Button title="adicionar desafio" onPress={() => navigation.navigate("AdmDesafioUpdate")}/>
+        <Button title="adicionar desafio" onPress={() => navigation.navigate("AdmDesafioUpdate", {conteudoID:conteudoID})}/>
      </View>
 
       <View style={{ display: "flex", flexDirection: "row", gap: 20, flexWrap: "wrap", alignItems: "center", alignContent: "center", justifyContent: "center"}}>
         {desafios.map((desafio, index) => (
             <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
-              <View style={{ borderRadius: 60, width: 80, height: 80 }}>
-                <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{desafio.foto}</Text>
-              </View>
-              
-              <View style={{ borderRadius: 60, width: 80, height: 80 }}>
-                <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{desafio.nivel}</Text>
-              </View>
-
-              <View style={{ borderRadius: 60, width: 80, height: 80 }}>
-                <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{desafio.texto}</Text>
-              </View>
               
               <View style={{ borderRadius: 60, width: 80, height: 80 }}>
                 <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{desafio.titulo}</Text>
               </View>
 
+              <View style={{ borderRadius: 60, width: 80, height: 80 }}>
+                <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{desafio.nivel}</Text>
+              </View>
+              
               <View>
-                <Button title="edit" onPress={() => navigation.navigate("AdmDesafioUpdate", {condesafioID: desafio.id, adm:adm})}/>
+                <Button title="edit" onPress={() => navigation.navigate("AdmDesafioUpdate", {conteudoID:conteudoID, desafioID: desafio.id, adm:adm})}/>
               </View>
 
 
               <View>
-                <Button title="delete" onPress={() =>deleteDesafios()}/>
+                <Button title="delete" onPress={() =>deleteDesafios(desafio.id)}/>
               </View>
 
 

@@ -1,5 +1,5 @@
 import { Picker } from '@react-native-picker/picker';
-import { updateDoc, getDoc } from 'firebase/firestore';
+import { updateDoc, getDoc, doc } from 'firebase/firestore';
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
@@ -21,7 +21,7 @@ function ProfileScreen({navigation, route}) {
     try {
     const userRef =  await doc(db, "usuarios", user.id);
       
-    if(!userRef.empty){
+    if(userRef){
         await updateDoc(userRef, {nome,email,escolaridade,senha});
        
         const newuser = await getDoc(userRef);
@@ -47,7 +47,7 @@ function ProfileScreen({navigation, route}) {
     <SafeAreaView style={styles.container}>
       <View>
         <View style={styles.container}>
-          <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Home', {user:user})}/>
+
           <View style={styles.InputContainer}>
             <Text style={styles.Label}>Nome Completo: </Text>
             <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: Vicente Dias Gomes' value={nome} onChangeText={setNome}/>
@@ -75,7 +75,7 @@ function ProfileScreen({navigation, route}) {
           </View>
 
           <Button style={styles.Button} title="Salvar Alterações" onPress={updateUser}/>
-          <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate("Home", {user})}/>
+          <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Home', {user:user})}/>
         </View>
       </View>
    </SafeAreaView>

@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import styles from './Style/style';
+import { Button } from 'react-native-elements';
 
 function DesafioScreen({ navigation, route }) {
     const { desafioID, user } = route.params;
@@ -35,14 +36,14 @@ function DesafioScreen({ navigation, route }) {
     const handleAnswer = (selectedAnswer) => {
         if (!desafio) return;
         
-        const currentQuizItem = desafio.Quiz[currentQuestion];
+        const currentQuizItem = desafio.questoes[currentQuestion];
         
-        if (currentQuizItem.answer === selectedAnswer) {
+        if (currentQuizItem.resposta === selectedAnswer) {
             setScore(prevScore => prevScore + 1);
         }
 
         const nextQuestion = currentQuestion + 1;
-        if (nextQuestion < desafio.Quiz.length) {
+        if (nextQuestion < desafio.questoes.length) {
             setCurrentQuestion(nextQuestion);
         } else {
             setShowScore(true);
@@ -65,24 +66,24 @@ function DesafioScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Home', {user:user})}/>
+            <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Home', {userId: user})}/>
             {showScore ? (
                 <View style={styles.scoreContainer}> 
-                    <Text style={styles.scoreText}>Você acertou {score} de {desafio.Quiz.length}</Text>
+                    <Text style={styles.scoreText}>Você acertou {score} de {desafio.questoes.length}</Text>
                     <TouchableOpacity style={styles.resetButton} onPress={handleRestart}> 
                         <Text style={styles.resetButtonText}>Reiniciar</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.resetButton} onPress={() => navigation.navigate('Start')}> 
-                        <Text style={styles.resetButtonText}>Voltar</Text>
+                    <TouchableOpacity style={styles.resetButton} onPress={() => navigation.navigate('Home', {userId: user})}> 
+                        <Text style={styles.resetButtonText} onPress={() => navigation.navigate('Home', {userId: user})}>Voltar</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
                 <View style={styles.questionContainer}> 
                     <Text style={styles.questionText}>
-                        {desafio.Quiz[currentQuestion]?.question}
+                        {desafio.questoes[currentQuestion]?.pergunta}
                     </Text>
                     
-                    {desafio.Quiz[currentQuestion]?.options.map((item, index) => (
+                    {desafio.questoes[currentQuestion]?.alternativas.map((item, index) => (
                         <TouchableOpacity 
                             key={index}
                             style={styles.optionButton} 

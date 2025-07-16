@@ -54,11 +54,11 @@ function AreaScreen({navigation, route}){
       <Text style={styles.title}>{area.titulo}</Text>
       
       {/* Lista de conteúdos */}
-      {conteudos.map((conteudo) => (
+      {conteudos.map((conteudo, index) => (
         <TouchableOpacity 
-          key={conteudo.id}
+          key={index}
           style={styles.conteudoItem}
-          onPress={() => navigation.navigate('Conteudo', { conteudoID: conteudo.id })}
+          onPress={() => navigation.navigate('Conteudo', { conteudoID: conteudo.id, user:user })}
         >
           <Text style={styles.title}>{conteudo.texto}</Text>
         </TouchableOpacity>

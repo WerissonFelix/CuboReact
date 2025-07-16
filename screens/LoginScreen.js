@@ -26,7 +26,7 @@ function LoginScreen({navigation, route}) {
       if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
           if (doc.id === 'PS82zLCNaXDlSFnqq76t'){
-              navigation.navigate('AdmHome',{user: {id: doc.id, ... doc.data()}});
+              navigation.navigate('AdmHome',{adm: {id: doc.id, ... doc.data()}});
           } else{
             navigation.navigate('Home', {user: {id: doc.id, ...doc.data()}});
           }

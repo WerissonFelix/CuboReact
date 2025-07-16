@@ -123,8 +123,8 @@ function HomeScreen({ navigation, route}) {
                 <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
 
                   <TouchableOpacity onPress={() => navigation.navigate("Area", {areaID:area.id, user:user})}>
-                    <View style={[styles.Icon, { backgroundColor: "orange"}]} onPress={() => navigation.navigate("Area")}>
-                    </View>
+                    <Button onPress={() => navigation.navigate("Area", {areaID:area.id, user:user})}>
+                    </Button>
                   </TouchableOpacity>
 
                   <View style={{ borderRadius: 60, backgroundColor: area.cor, width: 80, height: 80 }}>
@@ -158,9 +158,7 @@ function HomeScreen({ navigation, route}) {
                   <View style={{ borderRadius: 60, width: 80, height: 80 }}>
                      <Image source={{ uri: `https://raw.githubusercontent.com/Idinaldo/images-holder/refs/heads/main/assets/images/${desafio.foto}`}} style={{ width: 100, height: 100, borderRadius: 20 }} />
                   </View>
-                  <View>
-                    <Button title='nomeQz' onPress={() => navigation.navigate('Desafio', {desafioID: desafio.id} )} />
-                  </View>
+                  <Button title={desafio.titulo} onPress={() => {navigation.navigate('Desafio', { desafioID: desafio.id })}}/>
                   <View style={{ width: "100%"}}>
                     <Text style={{ fontSize: 20, textAlign: "center" }}>{desafio.titulo}</Text>
                   </View>
@@ -195,11 +193,6 @@ function HomeScreen({ navigation, route}) {
             <Image source={{ uri: "https://raw.githubusercontent.com/Idinaldo/images-holder/refs/heads/main/assets/images/usericon.jpg"}} style={{ height: 50, width: 50}} />
             <Text style={{ color: "white"}}>Perfil</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.resetButton} onPress={() => navigation.navigate("Desafio",{user:user})}>
-            <View onPress={() => navigation.navigate('Desafio')}>
-                <Text style={styles.resetButtonText}>Entrar quiz legal</Text>
-            </View>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

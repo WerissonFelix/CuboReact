@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-web';
+import { Picker} from '@react-native-picker/picker'
 import { db } from './firebase';
 import styles from './Style/style';
 
