@@ -35,51 +35,25 @@ function AdmHomeScreen({navigation, route}) {
 }, [])
    return(  
      <SafeAreaView>
-       <View>
-              <Button title="criar area" onPress={() => navigation.navigate("AdmAreaUpdate")}/>
-           </View>
-           <View style={{ display: "flex", flexDirection: "row", gap: 20, flexWrap: "wrap", alignItems: "center", alignContent: "center", justifyContent: "center"}}>
-              {area.map((area, index) => (
-                  <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
-                  
-      
-                    <View style={{ borderRadius: 60, backgroundColor: area.cor, width: 80, height: 80 }}>
-                      <Text style={{ fontSize: 50, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{area.icon}</Text>
-                    </View>
-      
-                    <View>
-                      <Text style={{ fontSize: 20, textAlign: "center" }}>{area.titulo}</Text>
-                    </View>
-      
-                    <View>
-                      <Text style={{ fontSize: 20, textAlign: "center" }}>{area.cor}</Text>
-                    </View>
-      
-                    <View>
-                      <Button title="mude a area" onPress={() => navigation.navigate("AdmAreaUpdate", {areaID:area.id, adm: adm})}/>
-                    </View>
-      
-      
-                    <View>
-                      <Button title="Ver conteúdos relacionados a área" onPress={() => navigation.navigate("AdmConteudo", {areaID:area.id, adm: adm})}/>
-                    </View>
-      
-      
-                    <View>
-                      <Button title="deleta a area" onPress={() =>deletearea(area.id)}/>
-                    </View>
-                  </View>
-                ) 
-                )}
+      {area.map((a, index) => (
+        <TouchableOpacity key={index} style={styles.card}>
+          <View style={styles.cardBody}>
+            <Text style={styles.cardTitle}>{a.titulo}</Text>
+            <Text style={styles.cardSubtitle}>{a.titulo}</Text>
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={() => alert("pressed")}>
+                <Text style={[styles.btnText, styles.btnPrimaryText]}>Editar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.btn, styles.btnDanger]} onPress={() => alert("pressed")}>
+                <Text style={[styles.btnText, styles.btnDangerText]}>Excluir</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.btn, styles.btnSuccess]} onPress={() => alert("pressed")}>
+                <Text style={[styles.btnText, styles.btnSuccessText]}>Ver Conteúdos</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          
-      <View>
-        <Button title="Desafios" onPress={() => navigation.navigate("AdmDesafio", {adm:adm})}/>
-        <Button title="Conteudos" onPress={() => navigation.navigate("AdmConteudo", {adm:adm})}/>
-      </View>
-      <View>
-        <Button title="Voltar" onPress={() => navigation.navigate('LoginSignUp')}/>
-      </View>
+        </TouchableOpacity>
+      ))}
     </SafeAreaView>
    )
 }
