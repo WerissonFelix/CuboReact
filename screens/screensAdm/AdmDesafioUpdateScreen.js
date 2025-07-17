@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-web';
+import { Picker } from '@react-native-picker/picker';
 
 import styles from '../Style/style';
 import { db } from '../firebase';
@@ -113,7 +114,7 @@ function AdmDesafioUpdateScreen({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView style={{ flex: 1, flexDirection: "column", flexWrap: "wrap", margin: 20}}>
         <View style={styles.container}>
 
           <View style={styles.container}>
@@ -130,15 +131,12 @@ function AdmDesafioUpdateScreen({ navigation, route }) {
 
           <View style={styles.container}>
             <Text style={styles.Label}>Nivel: </Text>
-            <Input
-              inputContainerStyle={{ borderBottomWidth: 0 }}
-              containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0 }}
-              style={styles.Input}
-              placeholder='Ex: Nível fácil'
-              value={nivel}
-              onChangeText={setNivel}
-            />
-          </View>
+            <Picker selectedValue={nivel} onValueChange={setNivel} dropdownIconColor="#999" style={styles.Picker}>
+              <Picker.Item label="Selecione o nível" value="#"/> 
+              <Picker.Item label="Fácil" value={"Fácil"} /> 
+              <Picker.Item label="Médio" value={"Médio"} /> 
+              <Picker.Item label="Difícil" value={"Difícil"} />
+            </Picker></View>
 
           {questoes.map((questao, questaoIndex) => (
             <View key={questaoIndex}>

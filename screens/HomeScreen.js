@@ -14,7 +14,7 @@ function HomeScreen({ navigation, route}) {
   const { user } = route.params;
   const [areas, setAreas] = useState([]);
   const [desafios, setDesafios] = useState([]);
-
+  
   useEffect(() => {
     const getdesafios = async () => {
     try {
@@ -188,7 +188,7 @@ function HomeScreen({ navigation, route}) {
           <Image source={{ uri: "https://raw.githubusercontent.com/Idinaldo/images-holder/refs/heads/main/assets/images/magnifyingglasses.jpg"}} style={{ height: 50, width: 50}} />
           <Text style={{ color: "white"}}>Pesquisar</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Profile", {user:user})}>
+        <TouchableOpacity onPress={() => navigation.navigate("AdmHome", {adm:user})}>
           <View>
             <Image source={{ uri: "https://raw.githubusercontent.com/Idinaldo/images-holder/refs/heads/main/assets/images/usericon.jpg"}} style={{ height: 50, width: 50}} />
             <Text style={{ color: "white"}}>Perfil</Text>

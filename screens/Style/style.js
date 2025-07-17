@@ -79,9 +79,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25
   },
-
-
-
   questionContainer: {
     marginBottom: 20,
     padding: 20,
@@ -137,6 +134,78 @@ const styles = StyleSheet.create({
   resetButtonText: {
     color: '#fff',
     fontSize: 18,
+    fontWeight: '600',
+  },
+  cardContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f8f9fa',
+    justifyContent: 'center',
+    width: "100%",
+    height: 80,
+    flexWrap: "wrap",
+    flexDirection: "row"
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 4,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: 100,
+  },
+  cardBody: {
+    padding: 16,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  cardText: {
+    fontSize: 14,
+    color: '#444',
+  },
+  btnPrimary: {
+    backgroundColor: '#0d6efd',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  btnSecondary: {
+    backgroundColor: '#6c757d',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  btnDanger: {
+    backgroundColor: '#dc3545',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  btnSuccess: {
+    backgroundColor: '#198754',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  btnText: {
+    color: '#fff',
     fontWeight: '600',
   }
 });

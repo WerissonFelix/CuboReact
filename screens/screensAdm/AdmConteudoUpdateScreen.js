@@ -64,8 +64,7 @@ const EditSaveConteudo = async () => {
     try {
       const conteudoData = {
         texto,
-        area: areaConteudo, // ATENÇÃO: Mantenha consistência com o nome do campo no Firestore
-        // Adicione outros campos necessários
+        area: areaConteudo // ATENÇÃO: Mantenha consistência com o nome do campo no Firestore
       };
 
       if (conteudoID) {
@@ -98,10 +97,8 @@ const EditSaveConteudo = async () => {
             
             <Picker selectedValue={areaConteudo} onValueChange={setAreaConteudo} dropdownIconColor="#999" style={styles.Picker}>
               <Picker.Item label="Selecione a Área" value="#"/>
-            {area.map((area, index)=>(  
-                <View style={{ display: "flex", width: 100, alignItems: "center", alignContent: "center"}} key={index}>
-                <Picker.Item label={area.titulo} value={area.id} />
-                </View>
+              {area.map((a, index) =>(  
+                <Picker.Item label={a.titulo} value={a.id} key={index} />
               ))}
               </Picker>       
           </View>
@@ -110,12 +107,6 @@ const EditSaveConteudo = async () => {
         <View>         
           <Button style={styles.Button} title={conteudoID ? "Atualizar" : "Cadastrar"} onPress={EditSaveConteudo}/>
         </View>
-
-        
-        <View>         
-          <Button style={styles.Button} title={"Voltar"} onPress={() => navigation.navigate('AdmHome', {adm:adm})}/>
-        </View>
-
        </View>
   </SafeAreaView>
   );

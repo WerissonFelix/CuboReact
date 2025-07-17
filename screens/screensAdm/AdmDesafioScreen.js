@@ -1,8 +1,8 @@
-import { collection, doc, getDocs, query, deleteDoc, where} from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
 import { Button} from 'react-native-elements';
 import { SafeAreaView } from 'react-native-web';
+import { Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { collection, doc, getDocs, query, deleteDoc, where} from 'firebase/firestore';
 
 import styles from '../Style/style';
 
@@ -39,8 +39,6 @@ function AdmDesafioScreen({navigation, route}){
             listDesafios.push({id:doc.id, ... doc.data()})
           });
           setDesafios(listDesafios)
-        } else {
-          alert("Não há desafios cadastrados!");
         }
       } catch (err) {
         console.log("ERROR: ", err);
@@ -53,9 +51,14 @@ function AdmDesafioScreen({navigation, route}){
  
   return( 
     <SafeAreaView>
-     <View>
-        <Button title="adicionar desafio" onPress={() => navigation.navigate("AdmDesafioUpdate", {conteudoID:conteudoID})}/>
-     </View>
+      <View style={{ flex: 1, justifyContent: "center", alignContent: "center", flexDirection: "column" }}>
+        {desafios.length == 0 ? (
+          <Text style={{ fontSize: 30, textAlign: "center", fontWeight: "bold" }}>Não há desafios cadastrados</Text>
+        ) : (<></>)}
+        <TouchableOpacity onPress={() => navigation.navigate("AdmDesafioUpdate", { adm: adm })}>
+          <Text style={{ color: "blue", textAlign: "center", fontSize: 20 }}>Clique aqui para adicionar desafios</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={{ display: "flex", flexDirection: "row", gap: 20, flexWrap: "wrap", alignItems: "center", alignContent: "center", justifyContent: "center"}}>
         {desafios.map((desafio, index) => (
@@ -80,12 +83,7 @@ function AdmDesafioScreen({navigation, route}){
 
 
             </View>
-          ) 
-        )}
-      </View>
-      
-      <View>
-        <Button title="Voltar" onPress={() => navigation.navigate('AdmHome', {adm:adm})}/>
+          ))}
       </View>
     </SafeAreaView>
   );

@@ -1,15 +1,15 @@
-import { collection, doc, getDocs, query, deleteDoc, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-web';
+import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { collection, doc, getDocs, query, deleteDoc, where } from 'firebase/firestore';
 
 import styles from '../Style/style';
 
 import {db} from '../firebase';
 
 function AdmConteudoScreen({navigation, route}){
-  const { adm, areaID } = route.params
+  const { adm, areaID, area } = route.params
   const [conteudos, setConteudos] = useState([])
 
   const deleteConteudo = async (conteudoID) =>{
@@ -38,8 +38,6 @@ function AdmConteudoScreen({navigation, route}){
             listConteudos.push({id:doc.id, ... doc.data()})
           });
           setConteudos(listConteudos)
-        } else {
-          alert("Não há Conteúdos cadastrados!");
         }
       } catch (err) {
         console.log("ERROR: ", err);
@@ -51,7 +49,48 @@ function AdmConteudoScreen({navigation, route}){
 }, [])
  
   return( 
-    <SafeAreaView>
+    <>
+    <SafeAreaView style={{ flex: 1, justifyContent: "center", alignContent: "center", backgroundColor: '#f8f9fa' }}>
+      <Text style={{ fontSize: 30, textAlign: "center", fontWeight: "bold" }}>Conteúdos de {area}</Text>
+      <ScrollView contentContainerStyle={styles.cardContainer}>
+        {conteudos.length > 0 ? conteudos.map((conteudo, index) => (
+          <TouchableOpacity key={index} style={{ minWidth: "50%", maxWidth: "90%"}}>
+            <View>
+              <View style={styles.cardBody}>
+                <Image
+                source={{ uri: 'https://t3.ftcdn.net/jpg/01/04/40/06/360_F_104400672_zCaPIFbYT1dXdzN85jso7NV8M6uwpKtf.jpg' }}
+                style={styles.image}
+              />
+                <Text style={styles.cardTitle}>Em tese, nome do conteúdo/artigo</Text>
+                <Text style={styles.cardText}>{conteudo.texto}</Text>
+                <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap" }}>
+                  <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={() => navigation.navigate("AdmConteudoUpdate", { adm: adm, areaID: area.id})}>
+                    <Text style={[styles.btnText, styles.btnPrimaryText]}>Editar</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity style={[styles.btn, styles.btnDanger]} onPress={() => deleteConteudo(conteudo.id)}>
+                    <Text style={[styles.btnText, styles.btnPrimaryText]}>Excluir</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={[styles.btn, styles.btnSuccess]} onPress={() => navigation.navigate("AdmDesafio", { adm: adm, conteudoID: conteudo.id})}>
+                    <Text style={[styles.btnText, styles.btnPrimaryText]}>Ver Desafios Relacionados</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
+        )) : (
+          <View style={{ flex: 1, justifyContent: "center", alignContent: "center", flexDirection: "column" }}>
+            <Text style={{ fontSize: 30, textAlign: "center", fontWeight: "bold" }}>Não há conteúdos para a área de {area}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("AdmConteudoUpdate", { adm: adm })}>
+              <Text style={{ color: "blue", textAlign: "center", fontSize: 20 }}>Clique aqui para adicionar conteúdos nessa área</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </ScrollView>
+    </SafeAreaView>
+    
+    {/*<SafeAreaView>
      <View>
         <Button title="adicionar conteúdo" onPress={() => navigation.navigate("AdmConteudoUpdate")}/>
      </View>
@@ -79,10 +118,8 @@ function AdmConteudoScreen({navigation, route}){
           ) 
         )}
       </View>
-      <View>         
-        <Button style={styles.Button} title={"Voltar"} onPress={() => navigation.navigate('AdmHome', {adm:adm})}/>
-      </View>
-    </SafeAreaView>
+    </SafeAreaView>*/}
+    </>
   );
     
 }

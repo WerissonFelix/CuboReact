@@ -28,23 +28,27 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Start">
-        <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="LoginSignUp" component={LoginSignUpScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="Cadastro" component={CadastroScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="AdmHome" component={AdmHomeScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="AdmArea" component={AdmAreaScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="AdmAreaUpdate" component={AdmAreaUpdateScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="AdmConteudo" component={AdmConteudoScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="AdmConteudoUpdate" component={AdmConteudoUpdateScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="AdmDesafio" component={AdmDesafioScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="AdmDesafioUpdate" component={AdmDesafioUpdateScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="Desafio" component={DesafioScreen} options={{ headerShown: false}}/>
-        <Stack.Screen name="Area" component={AreaScreen} options={{ headerShown: false}}/>
-      {/*<Stack.Screen name="Conteudo" component={ConteudoScreen} options={{ headerShown: false}}/>*/}  
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="LoginSignUp" component={LoginSignUpScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Cadastro" component={CadastroScreen} options={{ headerShown: false }}/>
+
+        {/** Common user screens */}
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Desafio" component={DesafioScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Area" component={AreaScreen} options={{ headerShown: false }}/>
+        {/*<Stack.Screen name="Conteudo" component={ConteudoScreen} options={{ headerShown: false}}/>*/}  
+        
+        {/** Adm screen */}
+        <Stack.Screen name="AdmHome" component={AdmHomeScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="AdmArea" component={AdmAreaScreen} options={{ headerTitle: "Voltar" }}/>
+        <Stack.Screen name="AdmDesafio" component={AdmDesafioScreen} options={{ headerTitle: "Voltar" }}/>
+        <Stack.Screen name="AdmConteudo" component={AdmConteudoScreen} options={{ headerTitle: "Voltar" }}/>
+        <Stack.Screen name="AdmAreaUpdate" component={AdmAreaUpdateScreen} options={{ headerTitle: "Voltar" }}/>
+        <Stack.Screen name="AdmDesafioUpdate" component={AdmDesafioUpdateScreen} options={{ headerTitle: "Voltar" }}/>
+        <Stack.Screen name="AdmConteudoUpdate" component={AdmConteudoUpdateScreen} options={{ headerTitle: "Voltar" }}/>
       </Stack.Navigator>
     </NavigationContainer>
     );

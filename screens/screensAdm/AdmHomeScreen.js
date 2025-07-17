@@ -1,8 +1,8 @@
 import { collection, doc, getDocs,  query, deleteDoc  } from 'firebase/firestore';
 import { useEffect, useState} from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Button } from 'react-native-elements';
-import { SafeAreaView } from 'react-native-web';
+import { SafeAreaView, ScrollView } from 'react-native-web';
 
 import styles from '../Style/style';
 
@@ -10,10 +10,12 @@ import {db} from '../firebase';
 
 function AdmHomeScreen({navigation, route}) {
   const { adm } = route.params;
-  const [area, setArea] = useState([]);
+  const resources = {"Áreas": "AdmArea", "Desafios": "AdmDesafio", "Games Interativos": ""}
+  
+  /*const [area, setArea] = useState([]);
   
   
-const deletearea = async (areaID) =>{
+  const deletearea = async (areaID) =>{
     try {
       await deleteDoc(doc(db, "areas", areaID));
       
@@ -43,32 +45,29 @@ const deletearea = async (areaID) =>{
     }
     getareas();
 
-}, [])
+}, [])*/
    return(  
-     <SafeAreaView>
-      <Button title='criar area' onPress={() => navigation.navigate('AdmAreaUpdate')}></Button>
-      {area.map((area, index) => (
-        <TouchableOpacity key={index} style={styles.card}>
-          <View style={styles.cardBody}>
-            <Text style={styles.cardTitle}>{area.titulo}</Text>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={() => navigation.navigate('AdmAreaUpdate', {areaID:area.id, adm:adm})}>
-                <Text style={[styles.btnText, styles.btnPrimaryText]}>Editar Área</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.btn, styles.btnDanger]} onPress={() => deletearea(area.id)}>
-                <Text style={[styles.btnText, styles.btnDangerText]}>Excluir Área</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.btn, styles.btnSuccess]} onPress={() => navigation.navigate('AdmConteudo', {areaID:area.id, adm:adm})}>
-                <Text style={[styles.btnText, styles.btnSuccessText]}>Ver Conteúdos</Text>
-              </TouchableOpacity>
+     <SafeAreaView style={{ flex: 1, justifyContent: "center", alignContent: "center", backgroundColor: '#f8f9fa' }}>
+      <ScrollView contentContainerStyle={styles.cardContainer}>
+        {Object.entries(resources).map(([resource, page], index) => (
+          <TouchableOpacity key={index} style={{ width: "50%"}}>
+            <View>
+              <View style={styles.cardBody}>
+                <Image
+                source={{ uri: 'https://t3.ftcdn.net/jpg/01/04/40/06/360_F_104400672_zCaPIFbYT1dXdzN85jso7NV8M6uwpKtf.jpg' }}
+                style={styles.image}
+              />
+                <Text style={styles.cardTitle}>Gerenciamento de {resource} </Text>
+                <View style={{ flex: 1, flexDirection: "row" }}>
+                  <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={() => navigation.navigate(page, { adm:adm })}>
+                    <Text style={[styles.btnText, styles.btnPrimaryText]}>Gerenciar</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
-      ))}
-
-      <View>
-        <Button title="Voltar" onPress={() => navigation.navigate('LoginSignUp')}/>
-      </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </SafeAreaView>
    )
 }

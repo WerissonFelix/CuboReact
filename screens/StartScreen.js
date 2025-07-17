@@ -17,10 +17,9 @@ function StartScreen({navigation}) {
   useEffect(() => {
     const timer = setTimeout(() => {
 
-      navigation.navigate('LoginSignUp');
-    }, 3000); // 3000 milliseconds = 3 seconds
+      navigation.navigate('Login');
+    }, 3000); // 3000 = 3s (this is milliseconds)
 
-    // Cleanup timer if component unmounts early
     return () => clearTimeout(timer);
   }, [navigation]);
 
