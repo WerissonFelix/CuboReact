@@ -55,7 +55,7 @@ function AdmDesafioScreen({navigation, route}){
         {desafios.length == 0 ? (
           <Text style={{ fontSize: 30, textAlign: "center", fontWeight: "bold" }}>Não há desafios cadastrados</Text>
         ) : (<></>)}
-        <TouchableOpacity onPress={() => navigation.navigate("AdmDesafioUpdate", { adm: adm })}>
+        <TouchableOpacity onPress={() => navigation.navigate("AdmDesafioUpdate", { adm: adm, conteudoID: conteudoID })}>
           <Text style={{ color: "blue", textAlign: "center", fontSize: 20 }}>Clique aqui para adicionar desafios</Text>
         </TouchableOpacity>
       </View>

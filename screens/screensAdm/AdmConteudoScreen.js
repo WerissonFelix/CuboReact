@@ -52,7 +52,12 @@ function AdmConteudoScreen({navigation, route}){
     <>
     <SafeAreaView style={{ flex: 1, justifyContent: "center", alignContent: "center", backgroundColor: '#f8f9fa' }}>
       <Text style={{ fontSize: 30, textAlign: "center", fontWeight: "bold" }}>Conteúdos de {area}</Text>
-      <ScrollView contentContainerStyle={styles.cardContainer}>
+   
+      <TouchableOpacity onPress={() => navigation.navigate("AdmConteudoUpdate", { adm: adm })}>
+        <Text style={{ color: "blue", textAlign: "center", fontSize: 20 }}>Clique aqui para adicionar conteúdos nessa área</Text>
+      </TouchableOpacity>
+
+      <ScrollView contentContainerStyle={styles.cardContainer}>    
         {conteudos.length > 0 ? conteudos.map((conteudo, index) => (
           <TouchableOpacity key={index} style={{ minWidth: "50%", maxWidth: "90%"}}>
             <View>
@@ -60,11 +65,12 @@ function AdmConteudoScreen({navigation, route}){
                 <Image
                 source={{ uri: 'https://t3.ftcdn.net/jpg/01/04/40/06/360_F_104400672_zCaPIFbYT1dXdzN85jso7NV8M6uwpKtf.jpg' }}
                 style={styles.image}
-              />
+             />
                 <Text style={styles.cardTitle}>Em tese, nome do conteúdo/artigo</Text>
+                <Text style={styles.cardText}>{conteudo.titulo}</Text>
                 <Text style={styles.cardText}>{conteudo.texto}</Text>
                 <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap" }}>
-                  <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={() => navigation.navigate("AdmConteudoUpdate", { adm: adm, areaID: area.id})}>
+                  <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={() => navigation.navigate("AdmConteudoUpdate", { adm: adm, areaID: area.id, conteudoID: conteudo.id})}>
                     <Text style={[styles.btnText, styles.btnPrimaryText]}>Editar</Text>
                   </TouchableOpacity>
                   

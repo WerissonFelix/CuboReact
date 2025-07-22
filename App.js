@@ -9,6 +9,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import StartScreen from './screens/StartScreen';
 import AreaScreen from './screens/AreaScreen';
 import DesafioScreen from './screens/DesafioScreen';
+import ConteudoScreen from './screens/ConteudoScreen';
 //import ConteudoScreen from './screens/ConteudoScreen';
 
 {/* ADM */}
@@ -39,6 +40,7 @@ function App() {
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Desafio" component={DesafioScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Area" component={AreaScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Conteudo" component={ConteudoScreen} options={{ headerShown: false }}/>
         {/*<Stack.Screen name="Conteudo" component={ConteudoScreen} options={{ headerShown: false}}/>*/}  
         
         {/** Adm screen */}

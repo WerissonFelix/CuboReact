@@ -49,8 +49,6 @@ function AreaScreen({navigation, route}){
 }, [])
   return (
     <View style={styles.container}>
-      <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Home', {user:user})}/>
-      
       <Text style={styles.title}>{area.titulo}</Text>
       
       {/* Lista de conteúdos */}
@@ -58,11 +56,12 @@ function AreaScreen({navigation, route}){
         <TouchableOpacity 
           key={index}
           style={styles.conteudoItem}
-          onPress={() => navigation.navigate('Conteudo', { conteudoID: conteudo.id, user:user })}
+          onPress={() => navigation.navigate('Conteudo', { conteudoID: conteudo.id, user:user, areaID: areaID })}
         >
-          <Text style={styles.title}>{conteudo.texto}</Text>
+          <Text style={styles.title}>{conteudo.titulo}</Text>
         </TouchableOpacity>
       ))}
+      <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Home', {user:user})}/>
     </View>
   );
 }

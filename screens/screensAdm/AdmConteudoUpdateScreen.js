@@ -13,7 +13,7 @@ import {db} from '../firebase';
 function AdmConteudoUpdateScreen({navigation, route}) {
   const { conteudoID, adm } = route.params || {};
   const [texto, setTexto] = useState('');
-  
+  const [titulo, setTitulo] = useState('');
   const [area, setArea] = useState([]);
   const [areaConteudo, setAreaConteudo] = useState('');
   
@@ -51,6 +51,7 @@ function AdmConteudoUpdateScreen({navigation, route}) {
             const data = docSnap.data();
             setTexto(data.texto || '');
             setAreaConteudo(data.area || ''); // ATENÇÃO: Verifique se o campo no Firestore é "area" ou "areaConteudo"
+            setTitulo(data.titulo || '');
           }
         }
       } catch (e) {
@@ -64,6 +65,7 @@ const EditSaveConteudo = async () => {
     try {
       const conteudoData = {
         texto,
+        titulo,
         area: areaConteudo // ATENÇÃO: Mantenha consistência com o nome do campo no Firestore
       };
 
@@ -86,6 +88,10 @@ const EditSaveConteudo = async () => {
       <SafeAreaView style={styles.container}>
 
       <View style={styles.container}>
+        <View style={styles.InputContainer}>
+          <Text style={styles.Label}>Título: </Text>
+          <Input inputContainerStyle={{ borderBottomWidth: 0 }} containerStyle={{ paddingHorizontal: 0, marginTop: 0, marginBottom: 0}} style={styles.Input} placeholder='Ex: título' value={titulo} onChangeText={setTitulo}/>
+        </View>
 
         <View style={styles.InputContainer}>
           <Text style={styles.Label}>texto: </Text>

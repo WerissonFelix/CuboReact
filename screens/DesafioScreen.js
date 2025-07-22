@@ -7,8 +7,6 @@ import { Button } from 'react-native-elements';
 
 function DesafioScreen({ navigation, route }) {
     const { desafioID, user } = route.params;
-    
-    
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
     const [showScore, setShowScore] = useState(false);
@@ -66,15 +64,14 @@ function DesafioScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Home', {userId: user})}/>
             {showScore ? (
                 <View style={styles.scoreContainer}> 
                     <Text style={styles.scoreText}>Você acertou {score} de {desafio.questoes.length}</Text>
                     <TouchableOpacity style={styles.resetButton} onPress={handleRestart}> 
                         <Text style={styles.resetButtonText}>Reiniciar</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.resetButton} onPress={() => navigation.navigate('Home', {userId: user})}> 
-                        <Text style={styles.resetButtonText} onPress={() => navigation.navigate('Home', {userId: user})}>Voltar</Text>
+                    <TouchableOpacity style={styles.resetButton} onPress={() => navigation.navigate('Home', {user: user})}> 
+                        <Text style={styles.resetButtonText} onPress={() => navigation.navigate('Home', {user: user})}>Voltar</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
@@ -94,6 +91,7 @@ function DesafioScreen({ navigation, route }) {
                     ))}
                 </View>
             )}
+            <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Home', {user: user})}/>
         </View>
     );
 }

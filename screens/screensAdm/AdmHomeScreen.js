@@ -10,7 +10,13 @@ import {db} from '../firebase';
 
 function AdmHomeScreen({navigation, route}) {
   const { adm } = route.params;
-  const resources = {"Áreas": "AdmArea", "Desafios": "AdmDesafio", "Games Interativos": ""}
+  const resources = {"Áreas": "AdmArea"}
+  {/*      Alterações
+    
+    - Na const resources: apaguei os Desafios e os Games interativos.   
+      Desafios foi apagado porque ele precisa de um conteudoID, o que não tem na home.
+
+  */}
   
   /*const [area, setArea] = useState([]);
   
