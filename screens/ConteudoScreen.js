@@ -41,7 +41,7 @@ function ConteudoScreen({navigation, route}){
           <Text style={{ fontSize: 30, fontWeight: "bold" ,color: "white",  textAlign: "center" }}>{conteudo.texto}</Text>  
         </View> 
       </View>
-    <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Area', {user:user, areaID})}/>  
+    <Button style={styles.Button} title="Voltar" onPress={() => navigation.navigate('Area', {user:user, areaID:areaID})}/>  
     </SafeAreaView>
   );
     
